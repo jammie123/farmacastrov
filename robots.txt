@@ -1,0 +1,4 @@
+User-agent: *
+Disallow: /dekuji-vam/
+
+Sitemap: http://www.farmacastrov.cz/sitemap.xml

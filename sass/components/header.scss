@@ -1,0 +1,18 @@
+.header{
+  
+  background: white;
+  z-index: 900 !important;
+  &-navbar-item{
+    width: 5rem;
+    img{
+      object-fit: contain;
+      max-height: inherit;
+    }
+  }
+  .navbar-burger{
+    height: inherit;
+    span{
+      height: 2px;
+    }
+  }
+}

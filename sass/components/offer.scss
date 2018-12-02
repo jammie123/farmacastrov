@@ -1,0 +1,14 @@
+@import "bulma/sass/utilities/_all";
+@import "bulma/sass/layout/_all";
+.offer {
+  display: flex;
+  @include mobile{
+    flex-direction: column;
+
+
+  }
+  justify-content: space-between;
+  font-family: monospace;
+  align-items: baseline;
+
+}

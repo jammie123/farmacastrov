@@ -1,0 +1,240 @@
+<?php session_start(); ?>
+<!DOCTYPE html>
+<!--[if IE 8]> <html lang="en" class="ie8"> <![endif]-->
+<!--[if !IE]><!-->
+<html lang="cz">
+<!--<![endif]-->
+
+<head>
+    <meta charset="utf-8">
+    <title>
+        Farma Častrov - Produkujeme maso tím nejlepším způsobem
+    </title>
+
+    <script src="https://maps.googleapis.com/maps/api/js?sensor=true" type="text/javascript">
+    </script>
+
+    <link href="https://fonts.googleapis.com/css?family=Open+Sans|Playfair+Display:700&subset=latin-ext" rel="stylesheet">
+    <meta content="Jsme malá farma na Vysočině a chováme masná hovězí plemena, kozy a ovce z kterých produkujeme vlastní maso." name="description">
+    <meta content="{{ csrf_token() }}" name="csrf-token">
+    <meta content="Farma Castrov" name="author">
+    <!-- Mobile Specific Meta -->
+    <meta content="width=device-width, initial-scale=1, maximum-scale=1" name="viewport">
+    <!-- Stylesheets -->
+    <link href="css/style.css" rel="stylesheet" />
+    </meta>
+    </meta>
+    </meta>
+    </meta>
+    </link>
+    </meta>
+    <script src="js/map.js">
+    </script>
+</head>
+
+<body>
+    <div id="root">
+        <div class="header">
+                <a href="http://farmacastrov.cz/index.html">
+                <div class="header-logo">
+                    <div class="header-logo-img">
+                    </div>
+                    <div class="header-logo-text">
+                        <p class="h3">
+                            Farma Častrov
+                        </p>
+                        <p class="small">
+                            Jsme Farma Častrov, jsme rodina
+                        </p>
+                    </div>
+                </div>
+                </a>
+                <div class="header-button">
+                    <div class="header-button-row">
+                        <a href="http://farmacastrov.cz/index.html" class="header-button-item ">
+                            Hlavní strana
+                        </a>
+                        <a href="#map-canvas" class="header-button-item">
+                            Kontaktovat
+                        </a>
+                        <a href="http://farmacastrov.cz/cenik.html" class="header-button-item active">
+                            Zobrazit ceník
+                        </a>
+                    </div>
+                </div>
+        </div>
+    </div>
+    <div class="prize">
+        <table class="table">
+            <h1>Ceník masa</h1>
+            <p>Maso prodáváme v bedýnkách, obvykle 5 a 10 kg. U
+skopového je možný odběr celého kusu. Máte-li individuální požadavky, kontaktujte nás.</p>
+            <thead>
+                <tr>
+                    <th>Hovězí bedýnka</th>
+                    <th>150 Kč/Kg</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td>Hovězí přední</td>
+                    <td>149 Kč/Kg</td>
+                </tr>
+                <tr>
+                    <td>Hovězí zadní</td>
+                    <td>189 Kč/Kg</td>
+                </tr>
+                <tr>
+                    <td>Hovězí falešná svíčková</td>
+                    <td>259 Kč/Kg</td>
+                </tr>
+                <tr>
+                    <td>Hovězí líčka</td>
+                    <td>169 Kč/Kg</td>
+                </tr>
+                <tr>
+                    <td>Hovězí krk</td>
+                    <td>169 Kč/Kg</td>
+                </tr>
+                <tr>
+                    <td>Vysoký roštěnec</td>
+                    <td>279 Kč/Kg</td>
+                </tr>
+                <tr>
+                    <td>Nízký roštěnec</td>
+                    <td>299 Kč/Kg</td>
+                </tr>
+                <tr>
+                    <td>Květová špička</td>
+                    <td>359 Kč/Kg</td>
+                </tr>
+                <tr>
+                    <td>Hovězí pravá svíčková</td>
+                    <td>619 Kč/Kg</td>
+                </tr>
+                <tr>
+                    <td>Hovězí kližka</td>
+                    <td>149 Kč/Kg</td>
+                </tr>
+                <tr>
+                    <td>Hovězí kostky na gulá</td>
+                    <td>149 Kč/Kg</td>
+                </tr>
+                <tr>
+                    <td>Hovězí hrudí</td>
+                    <td>119 Kč/Kg</td>
+                </tr>
+                <tr>
+                    <td>Hovězí žebra</td>
+                    <td>119 Kč/Kg</td>
+                </tr>
+                <tr>
+                    <td>Hovězí pupek</td>
+                    <td>149 Kč/Kg</td>
+                </tr>
+                <tr>
+                    <td>Hovězí ohánka</td>
+                    <td>99 Kč/Kg</td>
+                </tr>
+                <tr>
+                    <td>Hovězí jazyk</td>
+                    <td>79 Kč/Kg</td>
+                </tr>
+                <tr>
+                    <td>Hovězí dršťky</td>
+                    <td>79 Kč/Kg</td>
+                </tr>
+                <tr>
+                    <td>Hovězí droby</td>
+                    <td>60 Kč/Kg</td>
+                </tr>
+                <tr>
+                    <td>Hovězí kosti</td>
+                    <td>25 Kč/Kg</td>
+                </tr>
+           <thead>
+                <tr>
+                    <th>Kůzlečí bedýnka</th>
+                    <th>150 Kč/Kg</th>
+                </tr>
+            </thead>
+                <tr>
+                    <td>Kůzle celé jatečně upravené</td>
+                    <td>139 Kč/Kg</td>
+                </tr>
+                <tr>
+                    <td>Kůzlečí krk vcelku</td>
+                    <td>149 Kč/Kg</td>
+                </tr>
+                <tr>
+                    <td>Kůzlečí krk porcovaný</td>
+                    <td>149 Kč/Kg</td>
+                </tr>
+                <tr>
+                    <td>Kůzlečí plec s kostí</td>
+                    <td>179 Kč/Kg</td>
+                </tr>
+                <tr>
+                    <td>Kůzlečí plec vykoštěná</td>
+                    <td>159 Kč/Kg</td>
+                </tr>
+                <tr>
+                    <td>Kůzlečí kýta s kostí</td>
+                    <td>189 Kč/Kg</td>
+                </tr>
+                <tr>
+                    <td>Kůzlečí kýta bez kosti</td>
+                    <td>169 Kč/Kg</td>
+                </tr>
+                <tr>
+                    <td>Kůzlečí hřbet šrůtek</td>
+                    <td>169 Kč/Kg</td>
+                </tr>
+                <tr>
+                    <td>Kůzlečí motýlek</td>
+                    <td>149 Kč/Kg</td>
+                </tr>
+                <tr>
+                    <td>Kůzlečí bok vykoštěný</td>
+                    <td>109 Kč/Kg</td>
+                </tr>
+                <tr>
+                    <td>Kůzlečí žebra</td>
+                    <td>159 Kč/Kg</td>
+                </tr>
+                <tr>
+                    <td>Kůzlečí kolínko</td>
+                    <td>159 Kč/kg</td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+             <div class="contact">
+                <div id="map-canvas">
+                </div>
+                <div class="contact-info">
+                    <strong>
+                        Rodinná farma Častrov
+                    </strong>
+                    <p>
+                        MVDr. Ondřej Pána
+                    </p>
+                    <p>Častrov 87 <br>
+                    394 63 Častrov</p>
+                    <p>IČO: 72086050
+                    <br>DIČ: CZ8704251611</p>
+                        <p>info@farmacastrov.cz
+                            <br>
+                        Mob.: +420 722 696 522
+                        </p>
+                              <p>
+                                    Kdy máme otevřeno
+                                    <br>
+                                        pátek 16:00 - 19:30 <br> sobota 8:30-11:30 <br> po telefonické domluvě lze individuálně.
+                                    </br>
+                                    </p>
+
+                    </p>
+                </div>
+            </div>
+</body>

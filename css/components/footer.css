@@ -1,0 +1,32 @@
+@keyframes spinAround {
+  from {
+    transform: rotate(0deg); }
+  to {
+    transform: rotate(359deg); } }
+
+.footer {
+  background-color: #212121;
+  color: white;
+  padding-top: 25px;
+  padding-bottom: 97px; }
+  .footer-content {
+    padding-top: 24px;
+    display: flex;
+    justify-content: center; }
+    @media screen and (max-width: 800px) {
+      .footer-content {
+        flex-direction: column;
+        align-items: center; } }
+    .footer-content-item {
+      padding: 0px 10px; }
+      @media screen and (max-width: 800px) {
+        .footer-content-item {
+          padding: 0.5rem; } }
+      .footer-content-item--copy {
+        color: #898989; }
+        @media screen and (max-width: 800px) {
+          .footer-content-item--copy {
+            text-align: center; } }
+        .footer-content-item--copy a {
+          color: #898989;
+          text-decoration: underline; }

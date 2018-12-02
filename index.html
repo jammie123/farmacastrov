@@ -1,0 +1,457 @@
+<?php session_start(); ?>
+<!DOCTYPE html>
+<!--[if IE 8]> <html lang="en" class="ie8"> <![endif]-->
+<!--[if !IE]><!-->
+<html lang="cz">
+    <!--<![endif]-->
+    <head>
+        <meta charset="utf-8">
+            <title>
+                Farma Častrov - Produkujeme maso tím nejlepším způsobem
+            </title>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/vue/2.2.6/vue.js"></script>
+            <script src="https://cdn.jsdelivr.net/npm/vue-resource@1.3.4">
+            </script>
+            <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.10.6/moment.min.js">
+            </script>
+            <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.18.1/locale/cs.js">
+            </script>
+            <script src="https://maps.googleapis.com/maps/api/js?sensor=true" type="text/javascript">
+            </script>
+            <script src="https://unpkg.com/vee-validate@2.0.0-rc.17/dist/vee-validate.js">
+            </script>
+            <link href="https://fonts.googleapis.com/css?family=Open+Sans|Playfair+Display:700&subset=latin-ext" rel="stylesheet">
+                <meta content="Jsme malá farma na Vysočině a chováme masná hovězí plemena, kozy a ovce z kterých produkujeme vlastní maso." name="description">
+                    <meta content="{{ csrf_token() }}" name="csrf-token">
+                        <meta content="Farma Castrov" name="author">
+                            <!-- Mobile Specific Meta -->
+                            <meta content="width=device-width, initial-scale=1, maximum-scale=1" name="viewport">
+                                <!-- Stylesheets -->
+                                <link href="css/style.css" rel="stylesheet"/>
+                            </meta>
+                        </meta>
+                    </meta>
+                </meta>
+            </link>
+        </meta>
+        <script src="js/map.js">
+        </script>
+    </head>
+    <body>
+        <script>
+            Vue.use(VeeValidate, {
+  errorBagName: 'vErrors'
+});
+            Vue.Validator;
+        </script>
+        <div id="root" v-cloak>
+            <div class="header">
+                <a href="http://farmacastrov.cz/index.html">
+                <div class="header-logo">
+                    <div class="header-logo-img">
+                    </div>
+                    <div class="header-logo-text">
+                        <p class="h3">
+                            Farma Častrov
+                        </p>
+                        <p class="small">
+                            Jsme Farma Častrov, jsme rodina
+                        </p>
+                    </div>
+                </div>
+                </a>
+                <div class="header-button">
+                    <div class="header-button-row">
+                        <a href="http://farmacastrov.cz/index.html" class="header-button-item active">
+                            Hlavní strana
+                        </a>
+                        <a href="#map-canvas" class="header-button-item">
+                            Kontaktovat
+                        </a>
+                        <a href="http://farmacastrov.cz/cenik.html" class="header-button-item">
+                            Zobrazit ceník
+                        </a>
+                    </div>
+                </div>
+            </div>
+            <div class="welcome">
+                <div class="welcome-title">
+                    <h1 class="is-size-1">
+                        Maso z vyšlechtěných plemen
+                    </h1>
+                    <p>
+                        Objednejte si bedýnku a ochutnejte maso z Vysočiny.
+                    </p>
+                </div>
+                <div class="modal">
+                    <div class="modal-background"></div>
+                    <div class="modal-card">
+                      <header class="modal-card-head">
+                        <p class="modal-card-title">Modal title</p>
+                        <button class="delete" aria-label="close"></button>
+                      </header>
+                      <section class="modal-card-body">
+                        <!-- Content ... -->
+                      </section>
+                      <footer class="modal-card-foot">
+                        <button class="button is-success">Save changes</button>
+                        <button class="button">Cancel</button>
+                      </footer>
+                    </div>
+                  </div>
+                <div class="offer">
+                    <div class="offer-title">
+                        <span>Aktuální nabídky</span>
+                        <span v-if="Object.keys(offers).length == 0">Omlouváme se, nyní nemáme žádné nabídky</span>
+                    </div>
+                    <table v-if="Object.keys(offers).length > 0">
+                        <thead>
+                            <tr>
+                                <th class="name">
+                                    Typ masa
+                                </th>
+                                <th class="category">
+                                    Plemeno
+                                </th>
+                                <th class="date-vydeje">
+                                    Datum výdeje
+                                </th>
+                                <th class="date-vydeje">
+
+                                </th>
+
+                            </tr>
+                        </thead>
+                        <tbody v-for="offer in offers">
+                            <tr class="test">
+                                <td>
+                                    <span style="visibility: hidden;">
+                                        {{offer.id}}
+                                    </span>
+                                    {{offer.name}}
+                                </td>
+                                <td>
+                                    {{offer.animal}}
+                                </td>
+                                <td>
+                                    {{offer.date_finish | moment}}
+                                </td>
+                                <td>
+                                    <button class="btn btn-primary"  @click="selectOffer(offer)">
+                                        Zobrazit
+                                    </button>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+
+            </div>
+            <div class="proces">
+                <div class="proces-row">
+                    <div class="proces-item">
+                        <strong>
+                            Aktuální nabídka
+                        </strong>
+                        <p>
+                            Porážky plánujeme dopředu a visí na webových
+stránkách.
+                        </p>
+                    </div>
+                    <div class="proces-item">
+                        <strong>
+                            Výběr produktů
+                        </strong>
+                        <p>
+                            Maso prodáváme v bedýnkách, obvykle 5 a 10 kg. U
+skopového je možný odběr celého kusu.
+                        </p>
+                    </div>                    <div class="proces-item">
+                        <strong>
+                            Objednání
+                        </strong>
+                        <p>
+                           Objednejte si z přehledu porážek. Máte-li individuální požadavky kontaktujte nás.
+                        </p>
+                    </div>
+                    <div class="proces-item">
+                        <strong>
+                            Platba a předání
+                        </strong>
+                        <p>
+                           Zboží si můžete vyzvednout v naší provozovně v Častrově.
+                        </p>
+                    </div>
+                </div>
+            </div>
+            <div class="pros">
+                <div class="pros-title">
+                    Proč nakoupit u nás ?
+                </div>
+                <div class="pros-row">
+                    <div class="pros-item">
+                        <strong>
+                            Masná plemena
+                        </strong>
+                        <p>
+                            Chováme šlechtěná masná plemena, která mají správné předpoklady pro chuť masa.
+                        </p>
+                    </div>
+                    <div class="pros-item">
+                        <strong>
+                            Přirozený chov dobytka
+                        </strong>
+                        <p>
+                            Přirozený chov dobytka na pastvinách vyhovuje požadavkům ekologického zemědělství.
+                        </p>
+                    </div>
+                    <div class="pros-item">
+                        <strong>
+                            Zrání masa
+                        </strong>
+                        <p>
+                            Naše chladírenské prostory zajistí správnou vyzrálost tak, aby maso bylo křehké, šťavnaté a měkké.
+                        </p>
+                    </div>
+                    <div class="pros-item">
+                        <strong>
+                            Garance původu
+                        </strong>
+                        <p>
+                            Garantujeme původ masa rodokmenem, který obsahuje informace o porážce.
+                        </p>
+                    </div>
+                </div>
+            </div>
+            <div class="contact">
+                <div id="map-canvas">
+                </div>
+                <div class="contact-info">
+                    <strong>
+                        Rodinná farma Častrov
+                    </strong>
+                    <p>
+                        MVDr. Ondřej Pána
+                    </p>
+                    <p>Častrov 87 <br>
+                    394 63 Častrov</p>
+                    <p>IČO: 72086050
+                    <br>DIČ: CZ8704251611</p>
+                        <p>info@farmacastrov.cz
+                            <br>
+                        Mob.: +420 722 696 522
+                        </p>
+                              <p>
+                                    Kdy máme otevřeno
+                                    <br>
+                                        pátek 16:00 - 19:30 <br> sobota 8:30-11:30 <br> po telefonické domluvě lze individuálně.
+                                    </br>
+                                    </p>
+
+                    </p>
+                </div>
+            </div>
+
+            <div class="modal is-active" v-if="showModal">
+                <div class="modal-background">
+                </div>
+                <div class="modal-content">
+                    <!-- Any other Bulma elements you want -->
+                    <div class="box" v-if="showModalContent">
+                        <div class="box-offer" v-if="showModalCustomer">
+                            <h2>
+                                {{ clickedOffer.name }}
+                            </h2>
+                            <p class="box-offer-animal">
+                                Plemeno: {{ clickedOffer.animal }}
+                            </p>
+                            <div v-html="clickedOffer.description">
+                            </div>
+
+
+                                <div class="box-offer-date">
+                                    <div class="box-offer-date-content">
+                                        <h3 class="box-offer-date-finished">
+                                            Datum výdeje: {{ clickedOffer.date_finish  | moment}}
+                                        </h3>
+
+                                    </div>
+                                </div>
+                                <p class="box-offer-prize">
+                                    Celková cena: <span class="right strong">{{ count * size * clickedOffer.prize}} Kč</span>
+                                </p>
+                                <!-- <p class="box-offer-prize"> -->
+                                <!-- </p> -->
+                            </input>
+                        </div>
+                        <div class="box-success" v-if="showModalSuccess">
+                            <h3>
+                                Děkujeme za Vaši objednávku
+                                <span class="italic">
+                                    {{ addData.fullname }}
+                                </span>
+                            </h3>
+                            <p>
+                                Podívejte se na Váš email
+                                <br>
+                                    <p>
+                                        <strong>
+                                            {{ addData.email }}
+                                        </strong>
+                                    </p>
+                                    <br>
+                                        poslali jsme Vám shrnutí objednávky.
+                                        <br>
+                                            <p>
+                                            </p>
+                                            <button @click="exitModal()" class="btn btn-primary">
+                                                Vrátit zpět
+                                            </button>
+                                        </br>
+                                    </br>
+                                </br>
+                            </p>
+                        </div>
+                        <div class="box-customer" v-if="showModalCustomer">
+                            <h3>
+                                Objednávejte zde
+                            </h3>
+                                                        <label class="label">
+                                Zadejte počet bedýnek
+                            </label>
+                            <input class="input" v-model="count" value="1">
+                            <label class="label label-size">
+                                Zvolte typ bedýnky
+                            </label>
+                            <div class="box-offer-size">
+                                <label class="radio" for="one">
+                                    <input class="radio" id="one" type="radio" v-model="size" value="5">
+                                        5 kg bedýnka
+                                    </input>
+                                </label>
+                                <label class="radio" for="two">
+                                    <input class="radio" id="two" type="radio" v-model="size" value="10">
+                                        10 kg bedýnka
+                                    </input>
+                                </label>
+                            </div>
+
+
+                            <form v-on:submit.prevent="addOrder()">
+                                <div class="control">
+                                    <label class="label" v-bind:class="{ 'is-danger': errors.fullname }">
+                                        Zadejte celé jméno
+                                    </label>
+                                    <input style="visibility: hidden; display: none;" type="text" v-model="addData.id"/>
+                                    <input class="input" placeholder="Jméno a Příjmení" type="text" v-bind:class="{ 'is-danger': errors.fullname }" v-model="addData.fullname"/>
+                                    <p :errors="errors" class="help is-danger" v-if="errors.fullname">
+                                        {{ errors.fullname[0] }}
+                                    </p>
+                                    <label class="label" v-bind:class="{ 'is-danger': errors.email }">
+                                        Email
+                                    </label>
+                                    <input class="input" placeholder="Vasemail@email.cz" type="text" v-bind:class="{ 'is-danger': errors.email }" v-model="addData.email"/>
+                                    <p :errors="errors" class="help is-danger" v-if="errors.email">
+                                        {{ errors.email[0] }}
+                                    </p>
+                                    <label class="label" v-bind:class="{ 'is-danger': errors.phone }">
+                                        Mobil
+                                    </label>
+                                    <input class="input" placeholder="777555111" type="text" v-bind:class="{ 'is-danger': errors.phone }" v-model="addData.phone"/>
+                                    <p :errors="errors" class="help is-danger" v-if="errors.phone">
+                                        {{ errors.phone[0] }}
+                                    </p>
+                                </div>
+                                <button class="btn btn-primary">
+                                    Odeslat
+                                </button>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+                <button @click="exitModal()" aria-label="close" class="modal-close is-large">
+                </button>
+            </div>
+        </div>
+    </body>
+</html>
+<script>
+    var app = new Vue({
+    el: "#root",
+    data: {
+        size:'10',
+        count:'1',
+        offers: {},
+        showModal: false,
+        showModalContent: false,
+        showModalCustomer: false,
+        showModalSuccess: false,
+        clickedoffer: {},
+        addData: {
+            "fullname": "",
+            "phone": "",
+            "email": "",
+            "count": "",
+            "size": "",
+            "id": ""
+        },
+        submitted: false,
+        errors: [],
+    },
+    created: function() {
+        this.getAllUsers();
+    },
+    methods: {
+        getAllUsers: function() {
+            // GET /someUrl
+            this.$http.get('http://laravel.farmacastrov.cz/api/nabidky').then(response => {
+                // get body data
+                this.offers = response.data;
+            }, response => {
+
+            });
+        },
+        selectOffer(offer) {
+            app.clickedOffer = offer;
+            this.addData.id = app.clickedOffer.id;
+            this.showModal = true;
+            this.showModalContent = true;
+            this.showModalCustomer = true;
+            this.showModalSuccess = false;
+            Vue.set(this,'errors', '');
+
+        },
+        exitModal() {
+            this.showModal = false;
+            this.showModalContent = false;
+            this.showModalCustomer = false;
+            this.showModalSuccess = false;
+
+            Vue.set(this,'errors', '');
+        },
+        addOrder: function() {
+            this.addData.size = this.size;
+            this.addData.count = this.count;
+            this.$http.post('http://laravel.farmacastrov.cz/order', this.addData).then(response =>  {
+
+
+
+                Vue.set(this,'errors', response.body.errors);
+                if(!this.errors){
+
+                    this.showModalCustomer = false;
+                    this.showModalSuccess = true;
+
+                }
+
+            }, response => {  });
+            Vue.set(this,'errors', '');
+        }
+    },
+    filters: {
+        moment: function(date) {
+            return moment(date).format('ll');
+        }
+    }
+});
+</script>

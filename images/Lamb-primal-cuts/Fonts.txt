@@ -1,0 +1,5 @@
+Fonts used in this design;
+
+Font: Lobster,
+Author: Impallari Type,
+URL: http://www.fontsquirrel.com/fonts/Lobster;
