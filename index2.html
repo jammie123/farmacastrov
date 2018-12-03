@@ -430,7 +430,7 @@
       methods: {
         getAllUsers: function() {
           // GET /someUrl
-          this.$http.get("http://laravel.farmacastrov.cz/api/nabidky").then(
+          this.$http.get("https://laravel.farmacastrov.cz/api/nabidky").then(
             response => {
               // get body data
               this.offers = response.data;
@@ -459,7 +459,7 @@
           this.addData.size = this.size;
           this.addData.count = this.count;
           this.$http
-            .post("http://laravel.farmacastrov.cz/order", this.addData)
+            .post("https://laravel.farmacastrov.cz/order", this.addData)
             .then(
               response => {
                 Vue.set(this, "errors", response.body.errors);
