@@ -10,15 +10,23 @@
     <script src="https://cdn.jsdelivr.net/npm/vue-resource@1.3.4"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.10.6/moment.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.18.1/locale/cs.js"></script>
-    <script
-      src="https://maps.googleapis.com/maps/api/js?sensor=true"
-      type="text/javascript"
-    ></script>
     <script src="https://unpkg.com/vee-validate@2.0.0-rc.17/dist/vee-validate.js"></script>
-    <link
-      href="https://fonts.googleapis.com/css?family=Open+Sans|Playfair+Display:700&subset=latin-ext"
-      rel="stylesheet"
-    />
+    <!-- GA -->
+    <!-- Global site tag (gtag.js) - Google Analytics -->
+    <script
+      async
+      src="https://www.googletagmanager.com/gtag/js?id=UA-130166855-1"
+    ></script>
+    <script>
+      window.dataLayer = window.dataLayer || [];
+      function gtag() {
+        dataLayer.push(arguments);
+      }
+      gtag("js", new Date());
+
+      gtag("config", "UA-130166855-1");
+    </script>
+
     <meta
       content="Jsme malá farma na Vysočině a chováme masná hovězí plemena, kozy a ovce z kterých produkujeme vlastní maso."
       name="description"
@@ -101,24 +109,25 @@
       </nav>
 
       <section
-        class="hero is-large is-bold is-white is-fullheight"
+        class="welcome hero is-large is-bold is-white is-fullheight"
         style="background-image: url('images/welcome-3.jpg');"
       >
         <div class="hero-body overlay">
           <div class="container">
-            <h1 class="title is-size-1 has-text-white is-size-2-mobile">
+            <h1 class="title is-size-1 has-text-white is-size-3-mobile">
               Maso z vyšlechtěných plemen
             </h1>
             <h2 class="subtitle has-text-white is-size-5-mobile">
               Objednejte si bedýnku a ochutnejte maso z Vysočiny.
             </h2>
-            <a href="#offer" class="button is-warning is-large">Aktuální nabídka</a>
+            <a href="#offer" class="button is-warning is-large"
+              >Aktuální nabídka</a
+            >
           </div>
         </div>
       </section>
       <div id="offer"></div>
       <section class="section">
-          
         <div class="container">
           <h1 class="title has-text-centered is-size-3 p-md">
             Aktuální nabídky
@@ -127,14 +136,16 @@
             class="columns is-multiline is-centered is-mobile"
             v-for="offer in offers"
           >
-            <div
-              class="card column is-12 is-paddingless"
-            >
+            <div class="card column is-12 is-paddingless">
               <div class="offer p-md">
                 <span style="display: none;"> {{ offer.id }} </span>
-                <p class="title is-5">Bedýnka: {{ offer.name }}</p>
-                <p class="subtitle is-6">Plemeno: {{ offer.animal }}</p>
-                <p class="subtitle is-6">
+                <p class="title is-5 is-marginless">
+                  Bedýnka: {{ offer.name }}
+                </p>
+                <p class="subtitle is-6 is-marginless">
+                  Plemeno: {{ offer.animal }}
+                </p>
+                <p class="subtitle is-6 is-marginless">
                   Datum porážky: {{ offer.date_finish | moment }}
                 </p>
                 <a
@@ -223,17 +234,23 @@
             <h1 class="title">Kontaktuje nás</h1>
             <div class="pros-row columns is-multiline">
               <div class="pros-item column is-4">
-                  <p class="is-size-6 ">info@farmacastrov.cz</p>
-                  <p class="is-size-6 p-b-lg">Mob.: +420 722 696 522</p>
-                  <p class="is-size-5 has-text-weight-semibold p-b-md">Kdy máme otevřeno</p>
-                  <p class="is-size-6">pátek 16:00 - 19:30</p>
-                  <p class="is-size-6">sobota 8:30-11:30</p>
-                  <p class="is-size-6 p-b-lg">po telefonické domluvě lze individuálně.</p>
-                  <p class="is-size-5 has-text-weight-semibold p-b-md">Rodinná farma Častrov</p>
-                  <p class="is-size-6">MVDr. Ondřej Pána Častrov 87</p>
-                  <p class="is-size-6 p-b-md">394 63 Častrov</p>
-                  <p class="is-size-6">IČO: 72086050</p>
-                  <p class="is-size-6 p-b-md">DIČ: CZ8704251611</p>
+                <p class="is-size-6 ">info@farmacastrov.cz</p>
+                <p class="is-size-6 p-b-lg">Mob.: +420 722 696 522</p>
+                <p class="is-size-5 has-text-weight-semibold p-b-md">
+                  Kdy máme otevřeno
+                </p>
+                <p class="is-size-6">pátek 16:00 - 19:30</p>
+                <p class="is-size-6">sobota 8:30-11:30</p>
+                <p class="is-size-6 p-b-lg">
+                  po telefonické domluvě lze individuálně.
+                </p>
+                <p class="is-size-5 has-text-weight-semibold p-b-md">
+                  Rodinná farma Častrov
+                </p>
+                <p class="is-size-6">MVDr. Ondřej Pána Častrov 87</p>
+                <p class="is-size-6 p-b-md">394 63 Častrov</p>
+                <p class="is-size-6">IČO: 72086050</p>
+                <p class="is-size-6 p-b-md">DIČ: CZ8704251611</p>
               </div>
               <div class="pros-item column is-8">
                 <iframe
