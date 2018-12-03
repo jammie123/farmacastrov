@@ -1,5 +1,7 @@
-.welcome{
+.welcome {
   position: relative;
-  top: 4rem;
-  word-break: inherit
+  // top: 4rem;
+  .title {
+    word-break: inherit;
+  }
 }

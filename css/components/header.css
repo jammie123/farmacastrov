@@ -6,7 +6,7 @@
     .header-navbar-item img {
       object-fit: contain;
       max-height: inherit; }
-  .header .navbar-burger {
-    height: inherit; }
-    .header .navbar-burger span {
+  .header .navbar-brand .navbar-burger {
+    height: inherit !important; }
+    .header .navbar-brand .navbar-burger span {
       height: 2px; }

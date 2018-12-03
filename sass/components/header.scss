@@ -1,18 +1,19 @@
-.header{
-  
+.header {
   background: white;
   z-index: 900 !important;
-  &-navbar-item{
+  &-navbar-item {
     width: 5rem;
-    img{
+    img {
       object-fit: contain;
       max-height: inherit;
     }
   }
-  .navbar-burger{
-    height: inherit;
-    span{
-      height: 2px;
+  .navbar-brand {
+    .navbar-burger {
+      height: inherit !important;
+      span {
+        height: 2px;
+      }
     }
   }
 }

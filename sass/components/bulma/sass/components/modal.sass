@@ -1,4 +1,4 @@
-$modal-z: 40 !default
+$modal-z: 4000 !default
 
 $modal-background-background-color: rgba($black, 0.86) !default
 
@@ -34,7 +34,7 @@ $modal-card-body-padding: 20px !default
   display: none
   justify-content: center
   overflow: hidden
-  position: fixed
+  position: fixed !important
   z-index: $modal-z
   // Modifiers
   &.is-active
@@ -43,6 +43,8 @@ $modal-card-body-padding: 20px !default
 .modal-background
   +overlay
   background-color: $modal-background-background-color
+  display: flex
+  align-items: center
 
 .modal-content,
 .modal-card
