@@ -428,29 +428,6 @@
   </body>
 
   <script>
-    window.onload = function() {
-      document.querySelector("#open-modal").addEventListener("click", function(event) {
-          event.preventDefault();
-          var modal = document.querySelector(".modal"); // assuming you have only 1
-          var html = document.querySelector("html");
-          modal.classList.add("is-active");
-          html.classList.add("is-clipped");
-
-          var elementsArray = modal.querySelectorAll(
-            ".modal-close, .modal-background"
-          );
-          elementsArray.forEach(function(elem) {
-            elem.addEventListener("click", function(e) {
-              console.log(e);
-              e.preventDefault();
-              modal.classList.remove("is-active");
-              html.classList.remove("is-clipped");
-            });
-          });
-        });
-    };
-  </script>
-  <script>
     Vue.http.options.emulateJSON = true
     var app = new Vue({
       el: "#root",
@@ -475,7 +452,7 @@
         submitted: false,
         errors: []
       },
-      mounted: function() {
+      created: function() {
         this.getAllUsers();
       },
       methods: {
@@ -535,4 +512,27 @@
       }
     });
   </script>
+  <script>
+      window.onload = function() {
+        document.querySelector("#open-modal").addEventListener("click", function(event) {
+            event.preventDefault();
+            var modal = document.querySelector(".modal"); // assuming you have only 1
+            var html = document.querySelector("html");
+            modal.classList.add("is-active");
+            html.classList.add("is-clipped");
+  
+            var elementsArray = modal.querySelectorAll(
+              ".modal-close, .modal-background"
+            );
+            elementsArray.forEach(function(elem) {
+              elem.addEventListener("click", function(e) {
+                console.log(e);
+                e.preventDefault();
+                modal.classList.remove("is-active");
+                html.classList.remove("is-clipped");
+              });
+            });
+          });
+      };
+    </script>
 </html>
