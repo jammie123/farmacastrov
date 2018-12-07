@@ -7673,6 +7673,21 @@ label.panel-block {
   align-items: center;
   justify-content: space-between; }
 
+@media screen and (max-width: 768px) {
+  .offer-detail__box {
+    position: relative;
+    height: 100vh;
+    margin: 1rem; } }
+
+@media screen and (max-width: 768px) {
+  .offer-detail__content {
+    position: relative;
+    height: 100vh;
+    margin: 1rem; } }
+
+.offer-detail__closebutton {
+  position: absolute !important; }
+
 .m-none {
   margin: 0; }
 
