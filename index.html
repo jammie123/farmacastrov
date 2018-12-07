@@ -130,9 +130,6 @@
             class="columns is-multiline is-centered is-mobile"
             v-for="offer in offers"
           >
-            <div class="notification is-info" v-if="loading">
-              Vteřinku... Načítáme výpis nabídek
-            </div>
             <div class="card column is-12 is-paddingless">
               <div class="offer p-sm">
                 <span style="display: none;"> {{ offer.id }} </span>
@@ -262,16 +259,17 @@
         </div>
       </section>
 
-      <div id="modal-bis" class="offer-detail modal">
-        <div class="modal-background"></div>
-        <div class="modal-content">
+      <div id="modal-bis" ref="modal-bis" class="offer-detail modal">
+        <div class="modal-background" @click="exitModal()"></div>
+        <div class="offer-detail__content modal-content">
           <!-- Any other Bulma elements you want -->
-          <button
-            @click="exitModal()"
-            aria-label="close"
-            class="modal-close is-large is-pulled-right"
-          ></button>
-          <div class="box" v-if="showModalContent">
+
+          <div class="offer-detail__box box" v-if="showModalContent">
+              <button
+              @click="exitModal()"
+              aria-label="close"
+              class="offer-detail__closebutton modal-close is-large is-pulled-right"
+            ></button>
             <div class="section is-paddingless" v-if="showModalCustomer">
               <p class="title is-4">{{ clickedOffer.name }}</p>
               <p class="subtitle is-6 is-marginless">
@@ -429,6 +427,7 @@
 
   <script>
     Vue.http.options.emulateJSON = true
+    console.log("readyvue");
     var app = new Vue({
       el: "#root",
       data: {
@@ -453,7 +452,11 @@
         errors: []
       },
       created: function() {
+        console.log("get nabidky");
         this.getAllUsers();
+        console.log("ready nabidky");
+      },
+      mounted() {
       },
       methods: {
         getAllUsers: function() {
@@ -464,27 +467,42 @@
               // get body data
               this.loading = false;
               this.offers = response.data;
-              console.log("ready");
             }
             // response => {}
           );
         },
+
+        showModal2(){
+          // this.showModal = true;
+          var html = document.querySelector("html");
+          var modal = this.$refs["modal-bis"]
+          console.log(modal);
+          html.classList.add("is-clipped");
+          modal.classList.add("is-active");
+        },
+
+        hideModal2(){
+          var modal = this.$refs["modal-bis"]
+          var html = document.querySelector("html");
+          html.classList.remove("is-clipped");
+          modal.classList.remove("is-active");
+        },
+
         selectOffer(offer) {
           console.log(offer);
           app.clickedOffer = offer;
           this.addData.id = app.clickedOffer.id;
-          this.showModal = true;
+          this.showModal2();
           this.showModalContent = true;
           this.showModalCustomer = true;
           this.showModalSuccess = false;
           Vue.set(this, "errors", "");
         },
         exitModal() {
-          this.showModal = false;
+          this.hideModal2();
           this.showModalContent = false;
           this.showModalCustomer = false;
           this.showModalSuccess = false;
-
           Vue.set(this, "errors", "");
         },
         addOrder: function() {
@@ -512,27 +530,4 @@
       }
     });
   </script>
-  <script>
-      window.onload = function() {
-        document.querySelector("#open-modal").addEventListener("click", function(event) {
-            event.preventDefault();
-            var modal = document.querySelector(".modal"); // assuming you have only 1
-            var html = document.querySelector("html");
-            modal.classList.add("is-active");
-            html.classList.add("is-clipped");
-  
-            var elementsArray = modal.querySelectorAll(
-              ".modal-close, .modal-background"
-            );
-            elementsArray.forEach(function(elem) {
-              elem.addEventListener("click", function(e) {
-                console.log(e);
-                e.preventDefault();
-                modal.classList.remove("is-active");
-                html.classList.remove("is-clipped");
-              });
-            });
-          });
-      };
-    </script>
 </html>
