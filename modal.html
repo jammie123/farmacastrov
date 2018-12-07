@@ -1,0 +1,156 @@
+      <div id="modal-bis" class="offer-detail modal">
+        <div class="modal-background">
+        <div class="modal-content">
+          <!-- Any other Bulma elements you want -->
+          <div class="box" v-if="showModalContent">
+            <div class="section" v-if="showModalCustomer">
+              <p class="title is-4">{{ clickedOffer.name }}</p>
+              <p class="subtitle is-6 is-marginless">Plemeno: {{ clickedOffer.animal }}</p>
+              <p class="subtitle is-6">
+                  Datum výdeje: {{ clickedOffer.date_finish | moment }}
+                </p>
+              <!-- <div v-html="clickedOffer.description"></div> -->
+
+              <!-- <p class="box-offer-prize"> -->
+              <!-- </p> -->
+            </div>
+            <div class="section" v-if="showModalSuccess">
+              <h3>
+                Děkujeme za Vaši objednávku
+                <span class="italic"> {{ addData.fullname }} </span>
+              </h3>
+              <p>Podívejte se na Váš email <br /></p>
+
+              <p>
+                <strong> {{ addData.email }} </strong>
+              </p>
+              <br />
+              poslali jsme Vám shrnutí objednávky. <br />
+              <p></p>
+              <button @click="exitModal()" class="btn btn-primary">
+                Vrátit zpět
+              </button>
+            </div>
+            <div class="section" v-if="showModalCustomer">
+              <div class="field">
+                  <label class="label has-text-weight-light">Zvolte počet a typ bedýnky</label>
+                  <div class="control">
+                      <input class="input is-primary" v-model="count" value="1" />
+                  </div>
+              </div>
+              <div class="field p-b-lg">
+                  <!-- <label class="label has-text-weight-light">Zvolte typ bedýnky</label> -->
+                  <div class="control">
+                      <label class="radio" for="one">
+                          <input
+                            class="radio"
+                            id="one"
+                            type="radio"
+                            v-model="size"
+                            value="5"
+                          />
+                          5kg bedýnka
+                        </label>
+                        <label class="radio" for="two">
+                            <input
+                              class="radio"
+                              id="two"
+                              type="radio"
+                              v-model="size"
+                              value="10"
+                            />
+                            10kg bedýnka
+                          </label>
+                  </div>
+              </div>
+
+              <form v-on:submit.prevent="addOrder()" class="">
+                <div class="control p-b-lg">
+                  <label
+                    class="label has-text-weight-light"
+                    v-bind:class="{ 'is-danger': errors.fullname }"
+                  >
+                    Zadejte celé jméno
+                  </label>
+                  <input
+                    style="visibility: hidden; display: none;"
+                    type="text"
+                    v-model="addData.id"
+                    
+                  />
+                  <input
+                    class="input is-primary m -b-sm"
+                    placeholder="Jméno a Příjmení"
+                    type="text"
+                    v-bind:class="{ 'is-danger': errors.fullname }"
+                    v-model="addData.fullname"
+                  />
+                  <p
+                    :errors="errors"
+                    class="help is-danger"
+                    v-if="errors.fullname"
+                  >
+                    {{ errors.fullname[0] }}
+                  </p>
+                  <label
+                    class="label has-text-weight-light"
+                    v-bind:class="{ 'is-danger': errors.email }"
+                  >
+                    Email
+                  </label>
+                  <input
+                    class="input is-primary m-b-sm"
+                    placeholder="Vasemail@email.cz"
+                    type="text"
+                    v-bind:class="{ 'is-danger': errors.email }"
+                    v-model="addData.email"
+                  />
+                  <p
+                    :errors="errors"
+                    class="help is-danger"
+                    v-if="errors.email"
+                  >
+                    {{ errors.email[0] }}
+                  </p>
+                  <label
+                    class="label has-text-weight-light"
+                    v-bind:class="{ 'is-danger': errors.phone }"
+                  >
+                    Mobil
+                  </label>
+                  <input
+                    class="input is-primary m-b-sm"
+                    placeholder="777555111"
+                    type="text"
+                    v-bind:class="{ 'is-danger': errors.phone }"
+                    v-model="addData.phone"
+                  />
+                  <p
+                    :errors="errors"
+                    class="help is-danger"
+                    v-if="errors.phone"
+                  >
+                    {{ errors.phone[0] }}
+                  </p>
+                </div>
+                <div class="is-flex-tablet">
+
+                  <button class="button is-warning is-large">Odeslat</button>
+                  <p class="title is-5">
+                      Celková cena:
+                      <span class="title is-5"
+                        >{{ count * size * clickedOffer.prize }} Kč</span
+                      >
+                    </p>
+                </div>
+              </form>
+            </div>
+          </div>
+        </div>
+        <button
+          @click="exitModal()"
+          aria-label="close"
+          class="modal-close is-large"
+        ></button>
+      </div>
+    </div>

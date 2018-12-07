@@ -13,3 +13,13 @@
 
 
 }
+
+.offer-detail{
+  &__choose{
+    align-items: flex-end;
+  }
+  &__sent{
+    align-items: center;
+    justify-content: space-between;
+  }
+}
