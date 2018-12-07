@@ -355,7 +355,7 @@
                     v-model="addData.id"
                   />
                   <input
-                    class="input is-primary m -b-sm"
+                    class="input is-primary m-b-sm"
                     placeholder="Jméno a Příjmení"
                     type="text"
                     v-bind:class="{ 'is-danger': errors.fullname }"
@@ -416,7 +416,7 @@
                       >{{ count * size * clickedOffer.prize }} Kč</span
                     >
                   </p>
-                  <button class="button is-warning is-large">Odeslat</button>
+                  <button class="button is-warning is-medium">Odeslat objednávku</button>
                 </div>
                 <!-- </div> -->
               </form>
@@ -429,9 +429,7 @@
 
   <script>
     window.onload = function() {
-      document
-        .querySelector("#open-modal")
-        .addEventListener("click", function(event) {
+      document.querySelector("#open-modal").addEventListener("click", function(event) {
           event.preventDefault();
           var modal = document.querySelector(".modal"); // assuming you have only 1
           var html = document.querySelector("html");
@@ -453,6 +451,7 @@
     };
   </script>
   <script>
+    Vue.http.options.emulateJSON = true
     var app = new Vue({
       el: "#root",
       data: {
