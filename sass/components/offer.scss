@@ -21,14 +21,14 @@
   &__box {
     @include mobile {
       position: relative;
-      height: 100vh;
+      // height: 100vh;
       margin: 1rem;
     }
   }
   &__content {
     @include mobile {
       position: relative;
-      height: 100vh;
+      max-height: 100vh;
       margin: 1rem;
     }
   }
