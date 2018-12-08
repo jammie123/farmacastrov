@@ -39,10 +39,11 @@
     }
   }
   &__sent {
+    width: 100%;
     align-items: center;
     justify-content: space-between;
     &-prize {
-      margin: 0rem;
+      margin: 0rem !important;
       @include mobile {
         margin-bottom: 2rem;
       }

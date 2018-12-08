@@ -7688,10 +7688,11 @@ label.panel-block {
           .offer-detail__choose-radio * {
             padding: 0.5rem; } }
   .offer-detail__sent {
+    width: 100%;
     align-items: center;
     justify-content: space-between; }
     .offer-detail__sent-prize {
-      margin: 0rem; }
+      margin: 0rem !important; }
       @media screen and (max-width: 768px) {
         .offer-detail__sent-prize {
           margin-bottom: 2rem; } }
