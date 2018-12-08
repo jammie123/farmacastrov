@@ -4,19 +4,53 @@
   display: flex;
   @include mobile {
     flex-direction: column;
+    .title,
+    .subtitle {
+      margin-bottom: 1.5rem !important;
+    }
+    &__button {
+      width: 100%;
+    }
   }
+  .subtitle,
+  .title {
+    margin-bottom: 0rem;
+  }
+
   justify-content: space-between;
-  font-family: monospace;
   align-items: baseline;
 }
 
 .offer-detail {
   &__choose {
     align-items: flex-end;
+    &-radio {
+      padding-left: 1rem;
+      display: flex;
+      @include mobile {
+        padding-left: 0rem;
+        justify-content: center;
+        display: flex;
+        * {
+          padding: 0.5rem;
+        }
+      }
+    }
   }
   &__sent {
     align-items: center;
     justify-content: space-between;
+    &-prize {
+      margin: 0rem;
+      @include mobile {
+        margin-bottom: 2rem;
+      }
+    }
+    &-button {
+      @include mobile {
+        width: 100%;
+      }
+    }
   }
   &__box {
     @include mobile {
