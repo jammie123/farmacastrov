@@ -7698,10 +7698,12 @@ label.panel-block {
     .offer-detail__sent-button {
       width: 100%; } }
 
-@media screen and (max-width: 768px) {
-  .offer-detail__box {
-    position: relative;
-    margin: 1rem; } }
+.offer-detail__box {
+  z-index: 9000; }
+  @media screen and (max-width: 768px) {
+    .offer-detail__box {
+      position: relative;
+      margin: 1rem; } }
 
 @media screen and (max-width: 768px) {
   .offer-detail__content {
