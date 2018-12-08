@@ -7695,7 +7695,7 @@ label.panel-block {
       margin: 0rem !important; }
       @media screen and (max-width: 768px) {
         .offer-detail__sent-prize {
-          margin-bottom: 2rem; } }
+          margin: 1rem 0rem !important; } }
     @media screen and (max-width: 768px) {
       .offer-detail__sent-button {
         width: 100%; } }

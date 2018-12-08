@@ -45,7 +45,7 @@
     &-prize {
       margin: 0rem !important;
       @include mobile {
-        margin-bottom: 2rem;
+        margin: 1rem 0rem !important;
       }
     }
     &-button {
