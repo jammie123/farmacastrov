@@ -549,43 +549,42 @@
   .offer .title {
     margin-bottom: 0rem; }
 
-.offer-detail__choose {
-  align-items: flex-end; }
-  .offer-detail__choose-radio {
-    padding-left: 1rem;
-    display: flex; }
+.offer-detail {
+  overflow-y: scroll; }
+  .offer-detail__choose {
+    align-items: flex-end; }
+    .offer-detail__choose-radio {
+      padding-left: 1rem;
+      display: flex; }
+      @media screen and (max-width: 768px) {
+        .offer-detail__choose-radio {
+          padding-left: 0rem;
+          justify-content: center;
+          display: flex; }
+          .offer-detail__choose-radio * {
+            padding: 0.5rem; } }
+  .offer-detail__sent {
+    align-items: center;
+    justify-content: space-between; }
+    .offer-detail__sent-prize {
+      margin: 0rem; }
+      @media screen and (max-width: 768px) {
+        .offer-detail__sent-prize {
+          margin-bottom: 2rem; } }
     @media screen and (max-width: 768px) {
-      .offer-detail__choose-radio {
-        padding-left: 0rem;
-        justify-content: center;
-        display: flex; }
-        .offer-detail__choose-radio * {
-          padding: 0.5rem; } }
-
-.offer-detail__sent {
-  align-items: center;
-  justify-content: space-between; }
-  .offer-detail__sent-prize {
-    margin: 0rem; }
+      .offer-detail__sent-button {
+        width: 100%; } }
+  .offer-detail__box {
+    z-index: 9000;
+    overflow-y: scroll; }
     @media screen and (max-width: 768px) {
-      .offer-detail__sent-prize {
-        margin-bottom: 2rem; } }
+      .offer-detail__box {
+        position: relative;
+        margin: 1rem; } }
   @media screen and (max-width: 768px) {
-    .offer-detail__sent-button {
-      width: 100%; } }
-
-.offer-detail__box {
-  z-index: 9000; }
-  @media screen and (max-width: 768px) {
-    .offer-detail__box {
+    .offer-detail__content {
       position: relative;
+      max-height: 100vh;
       margin: 1rem; } }
-
-@media screen and (max-width: 768px) {
-  .offer-detail__content {
-    position: relative;
-    max-height: 100vh;
-    margin: 1rem; } }
-
-.offer-detail__closebutton {
-  position: absolute !important; }
+  .offer-detail__closebutton {
+    position: absolute !important; }
