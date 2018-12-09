@@ -38,6 +38,15 @@
       }
     }
   }
+  &__exitbutton {
+    &--header {
+      position: absolute;
+      top: 1rem;
+      right: 1rem;
+      min-height: 30px;
+      min-width: 30px;
+    }
+  }
   &__sent {
     width: 100%;
     align-items: center;

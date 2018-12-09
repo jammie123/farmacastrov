@@ -563,6 +563,12 @@
           display: flex; }
           .offer-detail__choose-radio * {
             padding: 0.5rem; } }
+  .offer-detail__exitbutton--header {
+    position: absolute;
+    top: 1rem;
+    right: 1rem;
+    min-height: 30px;
+    min-width: 30px; }
   .offer-detail__sent {
     width: 100%;
     align-items: center;
