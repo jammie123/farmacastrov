@@ -6924,10 +6924,10 @@ label.panel-block {
   background: white;
   z-index: 900 !important; }
   .header-navbar-item {
-    width: 5rem; }
+    width: 13rem; }
     .header-navbar-item img {
       object-fit: contain;
-      max-height: inherit; }
+      max-height: 2rem; }
   .header .navbar-brand .navbar-burger {
     height: inherit !important; }
     .header .navbar-brand .navbar-burger span {

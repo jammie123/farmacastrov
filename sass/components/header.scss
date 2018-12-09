@@ -2,10 +2,11 @@
   background: white;
   z-index: 900 !important;
   &-navbar-item {
-    width: 5rem;
+    width: 13rem;
     img {
       object-fit: contain;
-      max-height: inherit;
+      // max-height: inherit;
+      max-height: 2rem;
     }
   }
   .navbar-brand {
