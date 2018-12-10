@@ -577,7 +577,7 @@
       margin: 0rem !important; }
       @media screen and (max-width: 768px) {
         .offer-detail__sent-prize {
-          margin: 1rem 0rem !important; } }
+          margin: 0rem 0rem 1rem !important; } }
     @media screen and (max-width: 768px) {
       .offer-detail__sent-button {
         width: 100%; } }

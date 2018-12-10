@@ -1,240 +1,574 @@
-<?php session_start(); ?>
-<!DOCTYPE html>
-<!--[if IE 8]> <html lang="en" class="ie8"> <![endif]-->
-<!--[if !IE]><!-->
-<html lang="cz">
-<!--<![endif]-->
 
-<head>
-    <meta charset="utf-8">
-    <title>
-        Farma Častrov - Produkujeme maso tím nejlepším způsobem
-    </title>
-
-    <script src="https://maps.googleapis.com/maps/api/js?sensor=true" type="text/javascript">
+<html>
+  <!--[if IE 8]> <html lang="en" class="ie8"> <![endif]-->
+  <!-- [if !IE]><! -->
+  <head>
+    <meta lang="cz" />
+    <meta charset="utf-8" />
+    <title>Farma Častrov - Produkujeme maso tím nejlepším způsobem</title>
+    <script src="https://cdn.jsdelivr.net/npm/vue@2.5.17/dist/vue.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/vue-resource@1.3.4"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.10.6/moment.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.18.1/locale/cs.js"></script>
+    <script src="https://unpkg.com/vee-validate@2.0.0-rc.17/dist/vee-validate.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/vue-scrollto"></script>
+    <style>
+.slide-fade-enter-active {
+  transition: all .3s ease;
+}
+.slide-fade-leave-active {
+  transition: all .4s;
+}
+.slide-fade-enter, .slide-fade-leave-to
+/* .slide-fade-leave-active below version 2.1.8 */ {
+  transform: translateX(10px);
+  opacity: 0;
+}
+                </style>
+       
+    <!-- GA -->
+    <!-- Global site tag (gtag.js) - Google Analytics -->
+    <script
+      async
+      src="https://www.googletagmanager.com/gtag/js?id=UA-130166855-1"
+    ></script>
+    <script>
+      window.dataLayer = window.dataLayer || [];
+      function gtag() {
+        dataLayer.push(arguments);
+      }
+      gtag("js", new Date());
+      gtag("config", "UA-130166855-1");
     </script>
 
-    <link href="https://fonts.googleapis.com/css?family=Open+Sans|Playfair+Display:700&subset=latin-ext" rel="stylesheet">
-    <meta content="Jsme malá farma na Vysočině a chováme masná hovězí plemena, kozy a ovce z kterých produkujeme vlastní maso." name="description">
-    <meta content="{{ csrf_token() }}" name="csrf-token">
-    <meta content="Farma Castrov" name="author">
-    <!-- Mobile Specific Meta -->
-    <meta content="width=device-width, initial-scale=1, maximum-scale=1" name="viewport">
-    <!-- Stylesheets -->
+    <meta
+      content="Jsme malá farma na Vysočině a chováme masná hovězí plemena, kozy a ovce z kterých produkujeme vlastní maso."
+      name="description"
+    />
+    <meta content="{{ csrf_token() }}" name="csrf-token" />
+    <meta content="Farma Castrov" name="author" />
+    <meta
+      content="width=device-width, initial-scale=1, maximum-scale=1"
+      name="viewport"
+    />
     <link href="css/style.css" rel="stylesheet" />
-    </meta>
-    </meta>
-    </meta>
-    </meta>
-    </link>
-    </meta>
-    <script src="js/map.js">
+    <!-- <script src="js/map.js"></script> -->
+
+  </head>
+  <body>
+    <script>
+      Vue.use(VeeValidate, {
+        errorBagName: "vErrors"
+      });
+      Vue.Validator;
+      Vue.use(VueScrollTo)
+
+      // You can also pass in the default options
+      Vue.use(VueScrollTo, {
+          container: "body",
+          duration: 500,
+          easing: "ease",
+          offset: 0,
+          force: true,
+          cancelable: true,
+          onStart: false,
+          onDone: false,
+          onCancel: false,
+          x: false,
+          y: true
+      })
     </script>
-</head>
+    <div id="root" v-cloak="">
+      <nav class="header navbar  is-fixed-top" role="navigation" aria-label="main navigation">
+        <div class="navbar-brand">
+          <a class="navbar-item header-navbar-item" href="https://bulma.io">
+            <img src="images/LOGO-WHITE.png" />
+            <div class="p-l-xs is-size-6">Farma Častrov</div>
+          </a>
 
-<body>
-    <div id="root">
-        <div class="header">
-                <a href="http://farmacastrov.cz/index.html">
-                <div class="header-logo">
-                    <div class="header-logo-img">
-                    </div>
-                    <div class="header-logo-text">
-                        <p class="h3">
-                            Farma Častrov
-                        </p>
-                        <p class="small">
-                            Jsme Farma Častrov, jsme rodina
-                        </p>
-                    </div>
-                </div>
-                </a>
-                <div class="header-button">
-                    <div class="header-button-row">
-                        <a href="http://farmacastrov.cz/index.html" class="header-button-item ">
-                            Hlavní strana
-                        </a>
-                        <a href="#map-canvas" class="header-button-item">
-                            Kontaktovat
-                        </a>
-                        <a href="http://farmacastrov.cz/cenik.html" class="header-button-item active">
-                            Zobrazit ceník
-                        </a>
-                    </div>
-                </div>
+          <a
+            role="button"
+            class="navbar-burger burger has-background-warning"
+            aria-label="menu"
+            aria-expanded="false"
+            data-target="navbarBasicExample"
+          >
+            <span class="has-background-dark" aria-hidden="true"></span>
+            <span class="has-background-dark" aria-hidden="true"></span>
+            <span class="has-background-dark" aria-hidden="true"></span>
+          </a>
         </div>
-    </div>
-    <div class="prize">
-        <table class="table">
-            <h1>Ceník masa</h1>
-            <p>Maso prodáváme v bedýnkách, obvykle 5 a 10 kg. U
-skopového je možný odběr celého kusu. Máte-li individuální požadavky, kontaktujte nás.</p>
-            <thead>
-                <tr>
-                    <th>Hovězí bedýnka</th>
-                    <th>150 Kč/Kg</th>
-                </tr>
-            </thead>
-            <tbody>
-                <tr>
-                    <td>Hovězí přední</td>
-                    <td>149 Kč/Kg</td>
-                </tr>
-                <tr>
-                    <td>Hovězí zadní</td>
-                    <td>189 Kč/Kg</td>
-                </tr>
-                <tr>
-                    <td>Hovězí falešná svíčková</td>
-                    <td>259 Kč/Kg</td>
-                </tr>
-                <tr>
-                    <td>Hovězí líčka</td>
-                    <td>169 Kč/Kg</td>
-                </tr>
-                <tr>
-                    <td>Hovězí krk</td>
-                    <td>169 Kč/Kg</td>
-                </tr>
-                <tr>
-                    <td>Vysoký roštěnec</td>
-                    <td>279 Kč/Kg</td>
-                </tr>
-                <tr>
-                    <td>Nízký roštěnec</td>
-                    <td>299 Kč/Kg</td>
-                </tr>
-                <tr>
-                    <td>Květová špička</td>
-                    <td>359 Kč/Kg</td>
-                </tr>
-                <tr>
-                    <td>Hovězí pravá svíčková</td>
-                    <td>619 Kč/Kg</td>
-                </tr>
-                <tr>
-                    <td>Hovězí kližka</td>
-                    <td>149 Kč/Kg</td>
-                </tr>
-                <tr>
-                    <td>Hovězí kostky na gulá</td>
-                    <td>149 Kč/Kg</td>
-                </tr>
-                <tr>
-                    <td>Hovězí hrudí</td>
-                    <td>119 Kč/Kg</td>
-                </tr>
-                <tr>
-                    <td>Hovězí žebra</td>
-                    <td>119 Kč/Kg</td>
-                </tr>
-                <tr>
-                    <td>Hovězí pupek</td>
-                    <td>149 Kč/Kg</td>
-                </tr>
-                <tr>
-                    <td>Hovězí ohánka</td>
-                    <td>99 Kč/Kg</td>
-                </tr>
-                <tr>
-                    <td>Hovězí jazyk</td>
-                    <td>79 Kč/Kg</td>
-                </tr>
-                <tr>
-                    <td>Hovězí dršťky</td>
-                    <td>79 Kč/Kg</td>
-                </tr>
-                <tr>
-                    <td>Hovězí droby</td>
-                    <td>60 Kč/Kg</td>
-                </tr>
-                <tr>
-                    <td>Hovězí kosti</td>
-                    <td>25 Kč/Kg</td>
-                </tr>
-           <thead>
-                <tr>
-                    <th>Kůzlečí bedýnka</th>
-                    <th>150 Kč/Kg</th>
-                </tr>
-            </thead>
-                <tr>
-                    <td>Kůzle celé jatečně upravené</td>
-                    <td>139 Kč/Kg</td>
-                </tr>
-                <tr>
-                    <td>Kůzlečí krk vcelku</td>
-                    <td>149 Kč/Kg</td>
-                </tr>
-                <tr>
-                    <td>Kůzlečí krk porcovaný</td>
-                    <td>149 Kč/Kg</td>
-                </tr>
-                <tr>
-                    <td>Kůzlečí plec s kostí</td>
-                    <td>179 Kč/Kg</td>
-                </tr>
-                <tr>
-                    <td>Kůzlečí plec vykoštěná</td>
-                    <td>159 Kč/Kg</td>
-                </tr>
-                <tr>
-                    <td>Kůzlečí kýta s kostí</td>
-                    <td>189 Kč/Kg</td>
-                </tr>
-                <tr>
-                    <td>Kůzlečí kýta bez kosti</td>
-                    <td>169 Kč/Kg</td>
-                </tr>
-                <tr>
-                    <td>Kůzlečí hřbet šrůtek</td>
-                    <td>169 Kč/Kg</td>
-                </tr>
-                <tr>
-                    <td>Kůzlečí motýlek</td>
-                    <td>149 Kč/Kg</td>
-                </tr>
-                <tr>
-                    <td>Kůzlečí bok vykoštěný</td>
-                    <td>109 Kč/Kg</td>
-                </tr>
-                <tr>
-                    <td>Kůzlečí žebra</td>
-                    <td>159 Kč/Kg</td>
-                </tr>
-                <tr>
-                    <td>Kůzlečí kolínko</td>
-                    <td>159 Kč/kg</td>
-                </tr>
-            </tbody>
-        </table>
-    </div>
-             <div class="contact">
-                <div id="map-canvas">
-                </div>
-                <div class="contact-info">
-                    <strong>
-                        Rodinná farma Častrov
-                    </strong>
-                    <p>
-                        MVDr. Ondřej Pána
-                    </p>
-                    <p>Častrov 87 <br>
-                    394 63 Častrov</p>
-                    <p>IČO: 72086050
-                    <br>DIČ: CZ8704251611</p>
-                        <p>info@farmacastrov.cz
-                            <br>
-                        Mob.: +420 722 696 522
-                        </p>
-                              <p>
-                                    Kdy máme otevřeno
-                                    <br>
-                                        pátek 16:00 - 19:30 <br> sobota 8:30-11:30 <br> po telefonické domluvě lze individuálně.
-                                    </br>
-                                    </p>
 
-                    </p>
-                </div>
+        <div id="navbarBasicExample" class="navbar-menu">
+          <div class="navbar-end">
+            <a class="navbar-item"> Ceník masa </a>
+
+            <a class="navbar-item"> Kontakt a pobočky </a>
+          </div>
+        </div>
+      </nav>
+
+
+
+
+      <section class="hero is-medium has-background-light">
+
+        <div class="hero-body">
+
+          <div class="container">
+
+            <div class="prize__table columns is-multiline">
+              <h1 class="title">Ceník masa</h1>
+                    <p class="subtitle is-size-6">Maso prodáváme v bedýnkách, obvykle 5 a 10 kg. U
+        skopového je možný odběr celého kusu. Máte-li individuální požadavky, kontaktujte nás.</p>
+                    <table class="table is-bordered is-striped is-hoverable is-fullwidth">
+                            <thead>
+                                <tr>
+                                    <th>Hovězí bedýnka</th>
+                                    <th>150 Kč/Kg</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td>Hovězí přední</td>
+                                    <td>149 Kč/Kg</td>
+                                </tr>
+                                <tr>
+                                    <td>Hovězí zadní</td>
+                                    <td>189 Kč/Kg</td>
+                                </tr>
+                                <tr>
+                                    <td>Hovězí falešná svíčková</td>
+                                    <td>259 Kč/Kg</td>
+                                </tr>
+                                <tr>
+                                    <td>Hovězí líčka</td>
+                                    <td>169 Kč/Kg</td>
+                                </tr>
+                                <tr>
+                                    <td>Hovězí krk</td>
+                                    <td>169 Kč/Kg</td>
+                                </tr>
+                                <tr>
+                                    <td>Vysoký roštěnec</td>
+                                    <td>279 Kč/Kg</td>
+                                </tr>
+                                <tr>
+                                    <td>Nízký roštěnec</td>
+                                    <td>299 Kč/Kg</td>
+                                </tr>
+                                <tr>
+                                    <td>Květová špička</td>
+                                    <td>359 Kč/Kg</td>
+                                </tr>
+                                <tr>
+                                    <td>Hovězí pravá svíčková</td>
+                                    <td>619 Kč/Kg</td>
+                                </tr>
+                                <tr>
+                                    <td>Hovězí kližka</td>
+                                    <td>149 Kč/Kg</td>
+                                </tr>
+                                <tr>
+                                    <td>Hovězí kostky na gulá</td>
+                                    <td>149 Kč/Kg</td>
+                                </tr>
+                                <tr>
+                                    <td>Hovězí hrudí</td>
+                                    <td>119 Kč/Kg</td>
+                                </tr>
+                                <tr>
+                                    <td>Hovězí žebra</td>
+                                    <td>119 Kč/Kg</td>
+                                </tr>
+                                <tr>
+                                    <td>Hovězí pupek</td>
+                                    <td>149 Kč/Kg</td>
+                                </tr>
+                                <tr>
+                                    <td>Hovězí ohánka</td>
+                                    <td>99 Kč/Kg</td>
+                                </tr>
+                                <tr>
+                                    <td>Hovězí jazyk</td>
+                                    <td>79 Kč/Kg</td>
+                                </tr>
+                                <tr>
+                                    <td>Hovězí dršťky</td>
+                                    <td>79 Kč/Kg</td>
+                                </tr>
+                                <tr>
+                                    <td>Hovězí droby</td>
+                                    <td>60 Kč/Kg</td>
+                                </tr>
+                                <tr>
+                                    <td>Hovězí kosti</td>
+                                    <td>25 Kč/Kg</td>
+                                </tr>
+                            </tbody>
+                    </table>
+                    <table class="table is-bordered is-striped is-hoverable is-fullwidth">
+                           <thead>
+                                <tr>
+                                    <th>Kůzlečí bedýnka</th>
+                                    <th>150 Kč/Kg</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td>Kůzle celé jatečně upravené</td>
+                                    <td>139 Kč/Kg</td>
+                                </tr>
+                                <tr>
+                                    <td>Kůzlečí krk vcelku</td>
+                                    <td>149 Kč/Kg</td>
+                                </tr>
+                                <tr>
+                                    <td>Kůzlečí krk porcovaný</td>
+                                    <td>149 Kč/Kg</td>
+                                </tr>
+                                <tr>
+                                    <td>Kůzlečí plec s kostí</td>
+                                    <td>179 Kč/Kg</td>
+                                </tr>
+                                <tr>
+                                    <td>Kůzlečí plec vykoštěná</td>
+                                    <td>159 Kč/Kg</td>
+                                </tr>
+                                <tr>
+                                    <td>Kůzlečí kýta s kostí</td>
+                                    <td>189 Kč/Kg</td>
+                                </tr>
+                                <tr>
+                                    <td>Kůzlečí kýta bez kosti</td>
+                                    <td>169 Kč/Kg</td>
+                                </tr>
+                                <tr>
+                                    <td>Kůzlečí hřbet šrůtek</td>
+                                    <td>169 Kč/Kg</td>
+                                </tr>
+                                <tr>
+                                    <td>Kůzlečí motýlek</td>
+                                    <td>149 Kč/Kg</td>
+                                </tr>
+                                <tr>
+                                    <td>Kůzlečí bok vykoštěný</td>
+                                    <td>109 Kč/Kg</td>
+                                </tr>
+                                <tr>
+                                    <td>Kůzlečí žebra</td>
+                                    <td>159 Kč/Kg</td>
+                                </tr>
+                                <tr>
+                                    <td>Kůzlečí kolínko</td>
+                                    <td>159 Kč/kg</td>
+                                </tr>
+                            </tbody>
+                        </table>
             </div>
-</body>
+          </div>
+        </div>
+      </section>
+
+      <section class="hero is-medium has-background-light">
+        <div class="hero-body">
+          <div class="container">
+            <h1 class="title">Kontaktuje nás</h1>
+            <div class="pros-row columns is-multiline">
+              <div class="pros-item column is-4">
+                <p class="is-size-6 ">info@farmacastrov.cz</p>
+                <p class="is-size-6 p-b-lg">Mob.: +420 722 696 522</p>
+                <p class="is-size-5 has-text-weight-semibold p-b-md">
+                  Kdy máme otevřeno
+                </p>
+                <p class="is-size-6">pátek 16:00 - 19:30</p>
+                <p class="is-size-6">sobota 8:30-11:30</p>
+                <p class="is-size-6 p-b-lg">
+                  po telefonické domluvě lze individuálně.
+                </p>
+                <p class="is-size-5 has-text-weight-semibold p-b-md">
+                  Rodinná farma Častrov
+                </p>
+                <p class="is-size-6">MVDr. Ondřej Pána Častrov 87</p>
+                <p class="is-size-6 p-b-md">394 63 Častrov</p>
+                <p class="is-size-6">IČO: 72086050</p>
+                <p class="is-size-6 p-b-md">DIČ: CZ8704251611</p>
+              </div>
+              <div class="pros-item column is-8">
+                <iframe
+                  src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d2013.2840576146903!2d15.183637783466306!3d49.30887100856712!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x470cddc99196011d%3A0xbea89e516479f7c7!2sProdej+ryb+%E2%80%93+Karel+a+syn!5e0!3m2!1scs!2scz!4v1543789918014"
+                  width="100%"
+                  height="500"
+                  frameborder="0"
+                  style="border:0"
+                  allowfullscreen
+                ></iframe>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+
+<div id="modal-bis" ref="modal-bis" class="offer-detail modal">
+  <div class="modal-background" @click="exitModal()"></div>
+    <transition  name="slide-fade">
+        <div class="offer-detail__content modal-card" v-if="showModalContent">
+          <div class="modal-card-head">
+            <div class="section is-paddingless">
+              <p class="modal-card-title">{{ clickedOffer.name }}</p>
+              <p class="subtitle is-6 is-marginless">
+                  Plemeno: {{ clickedOffer.animal }}
+                </p>
+                <p class="subtitle is-6">
+                  Datum výdeje: {{ clickedOffer.date_finish | moment }}
+                </p>
+            </div>
+              <button
+              class="offer-detail__exitbutton--header delete"
+              @click="exitModal()"
+              aria-label="close"
+            ></button>
+
+          </div>
+          <section class="modal-card-body">
+            
+            <!-- <div v-html="clickedOffer.description"></div> -->
+            <div class="offer-detail__choose is-flex-tablet p-b-md p-t-md">
+              <div class="field is-marginless">
+                <label class="label has-text-weight-light"
+                  >Zvolte počet a typ bedýnky</label
+                >
+                <div class="control">
+                  <input class="input is-primary" v-model="count" value="1" />
+                </div>
+              </div>
+              <div class="offer-detail__choose-radio field">
+                <!--
+                  <label class="label has-text-weight-light">Zvolte typ bedýnky</label>
+                -->
+                <div class="control">
+                  <label class="radio" for="one">
+                    <input
+                      class="radio"
+                      id="one"
+                      type="radio"
+                      v-model="size"
+                      value="5"
+                    />
+                    5kg
+                  </label>
+                  <label class="radio" for="two">
+                    <input
+                      class="radio"
+                      id="two"
+                      type="radio"
+                      v-model="size"
+                      value="10"
+                    />
+                    10kg
+                  </label>
+                </div>
+              </div>
+            </div>
+
+            <form id="orderform" class="">
+              <div class="control p-b-lg">
+              <div class="control p-b-sm">
+              <label
+                  class="label has-text-weight-light"
+                  v-bind:class="{ 'help is-danger is-size-6': errors.fullname }"
+                >
+                  Zadejte celé jméno
+                </label>
+                <input
+                  style="visibility: hidden; display: none;"
+                  type="text"
+                  v-model="addData.id"
+                />
+                <input
+                  class="input is-primary "
+                  placeholder="Jméno a Příjmení"
+                  type="text"
+                  v-bind:class="{ 'is-danger': errors.fullname }"
+                  v-model="addData.fullname"
+                />
+                <p
+                  :errors="errors"
+                  class="help is-danger"
+                  v-if="errors.fullname"
+                >
+                  {{ errors.fullname[0] }}
+                </p>
+                </div>
+                <div class="control p-b-sm">
+                <label
+                  class="label has-text-weight-light"
+                  v-bind:class="{ 'help is-danger is-size-6': errors.email }"
+                >
+                  Email
+                </label>
+                <input
+                  class="input is-primary "
+                  placeholder="Vasemail@email.cz"
+                  type="text"
+                  v-bind:class="{ 'is-danger': errors.email }"
+                  v-model="addData.email"
+                />
+                <p :errors="errors" class="help is-danger" v-if="errors.email">
+                  {{ errors.email[0] }}
+                </p>
+              </div>
+              <div class="control p-b-sm">
+
+                <label
+                class="label has-text-weight-light"
+                v-bind:class="{ 'help is-danger is-size-6': errors.phone }"
+                >
+                Mobil
+              </label>
+              <input
+              class="input is-primary "
+              placeholder="777555111"
+              type="text"
+              v-bind:class="{ 'is-danger': errors.phone }"
+              v-model="addData.phone"
+              />
+              <p :errors="errors" class="help is-danger" v-if="errors.phone">
+                {{ errors.phone[0] }}
+              </p>
+            </div>
+              </div>
+            </form>
+            </section>
+            <div class="modal-card-foot">
+              <div class="offer-detail__sent is-flex-tablet has-text-centered">
+                <p
+                class="offer-detail__sent-prize title is-5 is-size-6-mobile has-text-weight-light"
+                >
+                Celková cena:
+                <span class="title is-5 is-size-6-mobile has-text-weight-light"
+                >{{ count * size * clickedOffer.prize }} Kč</span
+                >
+              </p>
+              <button type="submit" @click="submitItem($event)" class="button is-success is-medium">Odeslat objednávku</button>
+            </div>
+
+            </div>
+          </transition>
+        </div>
+      </div>
+    </div>
+  </body>
+
+  <script>
+    Vue.http.options.emulateJSON = true;
+    console.log("readyvue");
+    var app = new Vue({
+      el: "#root",
+      data: {
+        loading: false,
+        size: "10",
+        count: "1",
+        offers: {},
+        showModal: false,
+        showModalContent: false,
+        showModalCustomer: false,
+        showModalSuccess: false,
+        clickedoffer: {},
+        addData: {
+          fullname: "",
+          phone: "",
+          email: "",
+          count: "",
+          size: "",
+          id: ""
+        },
+        submitted: false,
+        errors: []
+      },
+      created: function() {
+        console.log("get nabidky");
+        this.getAllUsers();
+        console.log("ready nabidky");
+      },
+      mounted() {},
+      methods: {
+        submitItem(evt){
+          evt.preventDefault();
+          this.addOrder();
+     },
+        getAllUsers: function() {
+          // GET /someUrl
+          this.loading = true;
+          this.$http.get("https://laravel.farmacastrov.cz/api/nabidky").then(
+            response => {
+              // get body data
+              this.loading = false;
+              this.offers = response.data;
+            }
+            // response => {}
+          );
+        },
+
+        showModal2() {
+          // this.showModal = true;
+          var html = document.querySelector("html");
+          var modal = this.$refs["modal-bis"];
+          console.log(html);
+          console.log(modal);
+          html.classList.add("is-clipped");
+          modal.classList.add("is-active");
+        },
+        
+        hideModal2() {
+          var modal = this.$refs["modal-bis"];
+          var html = document.querySelector("html");
+          html.classList.remove("is-clipped");
+          modal.classList.remove("is-active");
+         
+        },
+
+        selectOffer(offer) {
+          console.log(offer);
+          app.clickedOffer = offer;
+          this.addData.id = app.clickedOffer.id;
+          this.showModalContent = true;
+          this.showModal2();
+          this.showModalCustomer = true;
+          this.showModalSuccess = false;
+          Vue.set(this, "errors", "");
+        },
+        exitModal() {
+          this.showModalContent = false;
+          this.hideModal2();
+          this.showModalCustomer = false;
+          this.showModalSuccess = false;
+          Vue.set(this, "errors", "");
+        },
+        addOrder: function() {
+          this.addData.size = this.size;
+          this.addData.count = this.count;
+          this.$http
+            .post("https://laravel.farmacastrov.cz/order", this.addData)
+            .then(
+              response => {
+                Vue.set(this, "errors", response.body.errors);
+                if (!this.errors) {
+                  this.showModalCustomer = false;
+                  this.showModalSuccess = true;
+                }
+              },
+              response => {}
+            );
+          Vue.set(this, "errors", "");
+        }
+      },
+      filters: {
+        moment: function(date) {
+          return moment(date).format("ll");
+        }
+      }
+    });
+  </script>
+</html>
