@@ -107,7 +107,7 @@
     <div id="root" v-cloak="">
       <nav class="header navbar  is-fixed-top" role="navigation" aria-label="main navigation">
         <div class="navbar-brand">
-          <a class="navbar-item header-navbar-item" href="https://bulma.io">
+          <a class="navbar-item header-navbar-item" href="index.html">
             <img src="images/LOGO-WHITE.png" />
             <div class="p-l-xs is-size-6">Farma Častrov</div>
           </a>
@@ -127,9 +127,9 @@
 
         <div id="navbarBasicExample" class="navbar-menu">
           <div class="navbar-end">
-            <a class="navbar-item"> Ceník masa </a>
+            <a href="cenik.html" class="navbar-item"> Ceník masa </a>
 
-            <a class="navbar-item"> Kontakt a pobočky </a>
+            <a class="navbar-item" v-scroll-to="'#contact'"> Kontakt a pobočky </a>
           </div>
         </div>
       </nav>
@@ -251,7 +251,7 @@
       </section>
       <section class="hero is-medium has-background-light">
         <div class="hero-body">
-          <div class="container">
+          <div id="contact" class="container">
             <h1 class="title">Kontaktuje nás</h1>
             <div class="pros-row columns is-multiline">
               <div class="pros-item column is-4">
@@ -291,7 +291,7 @@
 
 <div id="modal-bis" ref="modal-bis" class="offer-detail modal">
   <div class="modal-background" @click="exitModal()"></div>
-    <transition  name="slide-fade">
+    <transition name="slide-fade">
         <div class="offer-detail__content modal-card" v-if="showModalContent">
           <header class="modal-card-head">
             <div class="section is-paddingless">
@@ -348,22 +348,22 @@
             <form id="orderform" class="">
               <div class="control p-b-lg">
               <div class="control p-b-sm">
+                  <input
+                  style="display: none;"
+                  type="text"
+                  v-model="addData.id"
+                />
               <label
                   class="label has-text-weight-light"
-                  v-bind:class="{ 'help is-danger is-size-6': errors.fullname }"
+                  v:class="{ 'help is-danger is-size-6': errors.fullname }"
                 >
                   Zadejte celé jméno
                 </label>
                 <input
-                  style="visibility: hidden; display: none;"
-                  type="text"
-                  v-model="addData.id"
-                />
-                <input
                   class="input is-primary "
                   placeholder="Jméno a Příjmení"
                   type="text"
-                  v-bind:class="{ 'is-danger': errors.fullname }"
+                  v-bind:class="{'is-danger': errors.fullname }"
                   v-model="addData.fullname"
                 />
                 <p
@@ -414,6 +414,7 @@
               </div>
             </form>
             </section>
+
             <footer class="modal-card-foot">
               <div class="offer-detail__sent is-flex-tablet has-text-centered">
                 <p
@@ -424,16 +425,25 @@
                 >{{ count * size * clickedOffer.prize }} Kč</span
                 >
               </p>
-              <button type="submit" @click="submitItem($event)" class="button is-success is-medium">Dokončit objednávku</button>
+              <button type="submit" @click="showclass(); submitItem($event);" class="button is-success is-medium" v-bind:class="{ 'is-loading is-disabled': loading }">Dokončit objednávku</button>
 
             <!-- <button class="button" @click="exitModal">Zavřít</button> -->
             </footer>
-
+        </div>
+        <article class="offer-detail__success message is-success" v-if="showModalSuccess">
+            <div class="message-header">
+              <p>Success</p>
+              <button class="delete" aria-label="delete"></button>
             </div>
-          </transition>
+            <div class="message-body">
+              Lorem ipsum dolor sit amet, consectetur adipiscing elit. <strong>Pellentesque risus mi</strong>, tempus quis placerat ut, porta nec nulla. Vestibulum rhoncus ac ex sit amet fringilla. Nullam gravida purus diam, et dictum <a>felis venenatis</a> efficitur. Aenean ac <em>eleifend lacus</em>, in mollis lectus. Donec sodales, arcu et sollicitudin porttitor, tortor urna tempor ligula, id porttitor mi magna a neque. Donec dui urna, vehicula et sem eget, facilisis sodales sem.
+            </div>
+          </article>
+    </transition>
         </div>
       </div>
     </div>
+
   </body>
 
   <script>
@@ -442,8 +452,8 @@
     var app = new Vue({
       el: "#root",
       data: {
-        loading: false,
         size: "10",
+        loading:false,
         count: "1",
         offers: {},
         showModal: false,
@@ -468,9 +478,11 @@
         console.log("ready nabidky");
       },
       mounted() {},
+      filters : {},
       methods: {
         submitItem(evt){
           evt.preventDefault();
+          this.loading = true;
           this.addOrder();
      },
         getAllUsers: function() {
@@ -488,6 +500,7 @@
 
         showModal2() {
           // this.showModal = true;
+          
           var html = document.querySelector("html");
           var modal = this.$refs["modal-bis"];
           console.log(html);
@@ -521,22 +534,34 @@
           this.showModalSuccess = false;
           Vue.set(this, "errors", "");
         },
+
+        showclass: function() {
+          this.loading = true;
+        },
         addOrder: function() {
           this.addData.size = this.size;
           this.addData.count = this.count;
+          this.loading = true;
           this.$http
             .post("https://laravel.farmacastrov.cz/order", this.addData)
             .then(
               response => {
                 Vue.set(this, "errors", response.body.errors);
+                console.log(response.body.errors);
                 if (!this.errors) {
-                  this.showModalCustomer = false;
+                  this.showModalContent = false;
                   this.showModalSuccess = true;
+                  // this.hideModal2();
                 }
+                if (this.errors) {
+                  this.loading = false;
+                }
+
               },
               response => {}
             );
           Vue.set(this, "errors", "");
+          // this.loading = false;
         }
       },
       filters: {
