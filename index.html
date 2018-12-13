@@ -104,7 +104,10 @@
           y: true
       })
     </script>
+
+
     <div id="root" v-cloak="">
+
       <nav class="header navbar  is-fixed-top" role="navigation" aria-label="main navigation">
         <div class="navbar-brand">
           <a class="navbar-item header-navbar-item" href="index.html">
@@ -152,6 +155,8 @@
       </section>
       <section class="section">
         <div class="container">
+            <modal :show="showModal3" @close="showModal3 = false"></modal>
+            <button id="show-modal" @click="showModal3= true">New Post</button>
           <h1 id="offer-list" class="title has-text-centered is-size-3 p-md">
             Aktuální nabídky
           </h1>
@@ -292,7 +297,8 @@
 <div id="modal-bis" ref="modal-bis" class="offer-detail modal">
   <div class="modal-background" @click="exitModal()"></div>
     <transition name="slide-fade">
-        <div class="offer-detail__content modal-card" v-if="showModalContent">
+        <div class="modal-card" >
+          <div class="offer-detail__content" v-if="showModal">
           <header class="modal-card-head">
             <div class="section is-paddingless">
               <p class="modal-card-title">{{ clickedOffer.name }}</p>
@@ -305,8 +311,7 @@
 
           </header>
           <section class="modal-card-body">
-            
-            <!-- <div v-html="clickedOffer.description"></div> -->
+            <div v-if="showModalContent">
             <div class="offer-detail__choose is-flex-tablet p-b-md p-t-md">
               <div class="field is-marginless">
                 <label class="label has-text-weight-light"
@@ -413,7 +418,18 @@
             </div>
               </div>
             </form>
-            </section>
+          </div>
+          <transition name="slide-fade">
+              <section v-if="showModalSuccess">
+                <p>Děkujeme za Vaši objednávku</p>
+                <div>
+                  Informace o objednávce jsem Vám zaslali na tento email <strong>{{ addData.email }}</strong>
+                  Celková cena objednávky je <strong>{{ count * size * clickedOffer.prize }} Kč</strong>
+                  O vyzvednutí Vás budeme kontaktovat na <strong>addData.phone</strong> 
+                </div>
+              </section>
+            </transition>
+          </section>
 
             <footer class="modal-card-foot">
               <div class="offer-detail__sent is-flex-tablet has-text-centered">
@@ -425,20 +441,13 @@
                 >{{ count * size * clickedOffer.prize }} Kč</span
                 >
               </p>
-              <button type="submit" @click="showclass(); submitItem($event);" class="button is-success is-medium" v-bind:class="{ 'is-loading is-disabled': loading }">Dokončit objednávku</button>
+              <button type="submit" @click="showclass(); submitItem($event);" class="button is-warning is-medium" v-bind:class="{ 'is-loading is': loading }">Dokončit objednávku</button>
 
             <!-- <button class="button" @click="exitModal">Zavřít</button> -->
             </footer>
         </div>
-        <article class="offer-detail__success message is-success" v-if="showModalSuccess">
-            <div class="message-header">
-              <p>Success</p>
-              <button class="delete" aria-label="delete"></button>
-            </div>
-            <div class="message-body">
-              Lorem ipsum dolor sit amet, consectetur adipiscing elit. <strong>Pellentesque risus mi</strong>, tempus quis placerat ut, porta nec nulla. Vestibulum rhoncus ac ex sit amet fringilla. Nullam gravida purus diam, et dictum <a>felis venenatis</a> efficitur. Aenean ac <em>eleifend lacus</em>, in mollis lectus. Donec sodales, arcu et sollicitudin porttitor, tortor urna tempor ligula, id porttitor mi magna a neque. Donec dui urna, vehicula et sem eget, facilisis sodales sem.
-            </div>
-          </article>
+      </div>
+
     </transition>
         </div>
       </div>
@@ -447,8 +456,20 @@
   </body>
 
   <script>
-    Vue.http.options.emulateJSON = true;
-    console.log("readyvue");
+    Vue.component('modal', {
+  template: '#modal-template',
+  props: ['show'],
+  methods: {
+    close: function () {
+      this.$emit('close');
+    },
+    savePost: function () {
+      // Some save logic goes here...
+      
+      this.close();
+    }
+  }
+});
     var app = new Vue({
       el: "#root",
       data: {
@@ -503,8 +524,8 @@
           
           var html = document.querySelector("html");
           var modal = this.$refs["modal-bis"];
-          console.log(html);
-          console.log(modal);
+          this.showModal = true;
+          this.showModalContent = true;
           html.classList.add("is-clipped");
           modal.classList.add("is-active");
         },
@@ -512,6 +533,8 @@
         hideModal2() {
           var modal = this.$refs["modal-bis"];
           var html = document.querySelector("html");
+          this.showModal = false;
+          this.showModalContent = false;
           html.classList.remove("is-clipped");
           modal.classList.remove("is-active");
          
@@ -521,18 +544,20 @@
           console.log(offer);
           app.clickedOffer = offer;
           this.addData.id = app.clickedOffer.id;
-          this.showModalContent = true;
           this.showModal2();
-          this.showModalCustomer = true;
-          this.showModalSuccess = false;
           Vue.set(this, "errors", "");
         },
         exitModal() {
-          this.showModalContent = false;
           this.hideModal2();
           this.showModalCustomer = false;
           this.showModalSuccess = false;
           Vue.set(this, "errors", "");
+        },
+
+        showSuccessOrder(){
+          this.showModalContent = false;
+          this.showModalSuccess = true;
+          this.loading = false;
         },
 
         showclass: function() {
@@ -546,11 +571,10 @@
             .post("https://laravel.farmacastrov.cz/order", this.addData)
             .then(
               response => {
-                Vue.set(this, "errors", response.body.errors);
+                // Vue.set(this, "errors", response.body.errors);
                 console.log(response.body.errors);
                 if (!this.errors) {
-                  this.showModalContent = false;
-                  this.showModalSuccess = true;
+                  this.showSuccessOrder()
                   // this.hideModal2();
                 }
                 if (this.errors) {
