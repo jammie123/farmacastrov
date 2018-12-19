@@ -12,20 +12,7 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.18.1/locale/cs.js"></script>
     <script src="https://unpkg.com/vee-validate@2.0.0-rc.17/dist/vee-validate.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/vue-scrollto"></script>
-    <style>
-.slide-fade-enter-active {
-  transition: all .3s ease;
-}
-.slide-fade-leave-active {
-  transition: all .4s;
-}
-.slide-fade-enter, .slide-fade-leave-to
-/* .slide-fade-leave-active below version 2.1.8 */ {
-  transform: translateX(10px);
-  opacity: 0;
-}
-                </style>
-       
+
     <!-- GA -->
     <!-- Global site tag (gtag.js) - Google Analytics -->
     <script
@@ -155,8 +142,6 @@
       </section>
       <section class="section">
         <div class="container">
-            <modal :show="showModal3" @close="showModal3 = false"></modal>
-            <button id="show-modal" @click="showModal3= true">New Post</button>
           <h1 id="offer-list" class="title has-text-centered is-size-3 p-md">
             Aktuální nabídky
           </h1>
@@ -296,12 +281,13 @@
 
 <div id="modal-bis" ref="modal-bis" class="offer-detail modal">
   <div class="modal-background" @click="exitModal()"></div>
-    <transition name="slide-fade">
+    
         <div class="modal-card" >
-          <div class="offer-detail__content" v-if="showModal">
+          <div class="offer-detail__content" v-if="showModal.modal">
           <header class="modal-card-head">
             <div class="section is-paddingless">
-              <p class="modal-card-title">{{ clickedOffer.name }}</p>
+              <p class="modal-card-title" v-if="!showModal.message">Bedýnka: {{ clickedOffer.name }}</p>
+              <p class="modal-card-title" v-if="showModal.message">Děkujeme za Vaši objednávku</p>
             </div>
               <button
               class="offer-detail__exitbutton--header delete"
@@ -311,7 +297,7 @@
 
           </header>
           <section class="modal-card-body">
-            <div v-if="showModalContent">
+            <div v-if="showModal.content">
             <div class="offer-detail__choose is-flex-tablet p-b-md p-t-md">
               <div class="field is-marginless">
                 <label class="label has-text-weight-light"
@@ -322,9 +308,6 @@
                 </div>
               </div>
               <div class="offer-detail__choose-radio field">
-                <!--
-                  <label class="label has-text-weight-light">Zvolte typ bedýnky</label>
-                -->
                 <div class="control">
                   <label class="radio" for="one">
                     <input
@@ -356,7 +339,7 @@
                   <input
                   style="display: none;"
                   type="text"
-                  v-model="addData.id"
+                  v-model="order.id"
                 />
               <label
                   class="label has-text-weight-light"
@@ -369,7 +352,7 @@
                   placeholder="Jméno a Příjmení"
                   type="text"
                   v-bind:class="{'is-danger': errors.fullname }"
-                  v-model="addData.fullname"
+                  v-model="order.fullname"
                 />
                 <p
                   :errors="errors"
@@ -391,7 +374,7 @@
                   placeholder="Vasemail@email.cz"
                   type="text"
                   v-bind:class="{ 'is-danger': errors.email }"
-                  v-model="addData.email"
+                  v-model="order.email"
                 />
                 <p :errors="errors" class="help is-danger" v-if="errors.email">
                   {{ errors.email[0] }}
@@ -410,7 +393,7 @@
               placeholder="777555111"
               type="text"
               v-bind:class="{ 'is-danger': errors.phone }"
-              v-model="addData.phone"
+              v-model="order.phone"
               />
               <p :errors="errors" class="help is-danger" v-if="errors.phone">
                 {{ errors.phone[0] }}
@@ -419,16 +402,14 @@
               </div>
             </form>
           </div>
-          <transition name="slide-fade">
-              <section v-if="showModalSuccess">
-                <p>Děkujeme za Vaši objednávku</p>
+         
+              <section v-if="showModal.message">
                 <div>
-                  Informace o objednávce jsem Vám zaslali na tento email <strong>{{ addData.email }}</strong>
-                  Celková cena objednávky je <strong>{{ count * size * clickedOffer.prize }} Kč</strong>
-                  O vyzvednutí Vás budeme kontaktovat na <strong>addData.phone</strong> 
+                  Informace o objednávce jsem Vám zaslali na tento email <strong>{{ order.email }}</strong><br>
+                  O vyzvednutí Vás budeme kontaktovat na <strong>{{order.phone}}</strong> 
                 </div>
               </section>
-            </transition>
+           
           </section>
 
             <footer class="modal-card-foot">
@@ -441,35 +422,19 @@
                 >{{ count * size * clickedOffer.prize }} Kč</span
                 >
               </p>
-              <button type="submit" @click="showclass(); submitItem($event);" class="button is-warning is-medium" v-bind:class="{ 'is-loading is': loading }">Dokončit objednávku</button>
-
-            <!-- <button class="button" @click="exitModal">Zavřít</button> -->
+              <button v-if=!showModal.message type="submit" @click="submitForm($event);" class="button is-warning is-medium" v-bind:class="{ 'is-loading is': loading }">Dokončit objednávku</button>
+              <button v-if=showModal.message type="submit" @click="exitModal()" class="button is-medium" v-bind:class="{ 'is-loading is': loading }">Zavřít</button>
+              </div>
             </footer>
         </div>
       </div>
-
-    </transition>
-        </div>
+</div>
       </div>
     </div>
 
   </body>
 
   <script>
-    Vue.component('modal', {
-  template: '#modal-template',
-  props: ['show'],
-  methods: {
-    close: function () {
-      this.$emit('close');
-    },
-    savePost: function () {
-      // Some save logic goes here...
-      
-      this.close();
-    }
-  }
-});
     var app = new Vue({
       el: "#root",
       data: {
@@ -477,12 +442,14 @@
         loading:false,
         count: "1",
         offers: {},
-        showModal: false,
-        showModalContent: false,
-        showModalCustomer: false,
-        showModalSuccess: false,
-        clickedoffer: {},
-        addData: {
+        clickedOffer:{},
+        showModal:{
+          modal:false,
+          content:false,
+          message:false,
+          close: false,
+        },
+        order: {
           fullname: "",
           phone: "",
           email: "",
@@ -490,18 +457,14 @@
           size: "",
           id: ""
         },
-        submitted: false,
         errors: []
       },
       created: function() {
-        console.log("get nabidky");
         this.getAllUsers();
-        console.log("ready nabidky");
       },
-      mounted() {},
-      filters : {},
+
       methods: {
-        submitItem(evt){
+        submitForm(evt){
           evt.preventDefault();
           this.loading = true;
           this.addOrder();
@@ -518,64 +481,61 @@
             // response => {}
           );
         },
-
-        showModal2() {
+        showModal() {
           // this.showModal = true;
-          
           var html = document.querySelector("html");
           var modal = this.$refs["modal-bis"];
-          this.showModal = true;
-          this.showModalContent = true;
+          this.showModal.modal = true;
+          this.showModal.content = true;
           html.classList.add("is-clipped");
           modal.classList.add("is-active");
         },
-        
-        hideModal2() {
+
+        hideModal() {
           var modal = this.$refs["modal-bis"];
           var html = document.querySelector("html");
-          this.showModal = false;
-          this.showModalContent = false;
+          this.showModal.modal = false;
+          this.showModal.content = false;
+          this.showModal.message = false;
+          this.showModal.close = false;
           html.classList.remove("is-clipped");
           modal.classList.remove("is-active");
          
         },
 
         selectOffer(offer) {
-          console.log(offer);
+          console.log(this.showModal);
           app.clickedOffer = offer;
-          this.addData.id = app.clickedOffer.id;
-          this.showModal2();
+          this.order.id = app.clickedOffer.id;
+          this.showModal();
           Vue.set(this, "errors", "");
         },
         exitModal() {
-          this.hideModal2();
-          this.showModalCustomer = false;
-          this.showModalSuccess = false;
+          this.hideModal();
+          
+          console.log(this.$data);
           Vue.set(this, "errors", "");
         },
 
         showSuccessOrder(){
-          this.showModalContent = false;
-          this.showModalSuccess = true;
+          this.showModal.content = false;
+          this.showModal.message = true;
+          this.showModal.close = true;
           this.loading = false;
         },
 
-        showclass: function() {
-          this.loading = true;
-        },
         addOrder: function() {
-          this.addData.size = this.size;
-          this.addData.count = this.count;
+          this.order.size = this.size;
+          this.order.count = this.count;
           this.loading = true;
           this.$http
-            .post("https://laravel.farmacastrov.cz/order", this.addData)
+            .post("https://laravel.farmacastrov.cz/order", this.order)
             .then(
               response => {
                 // Vue.set(this, "errors", response.body.errors);
                 console.log(response.body.errors);
                 if (!this.errors) {
                   this.showSuccessOrder()
-                  // this.hideModal2();
                 }
                 if (this.errors) {
                   this.loading = false;
@@ -585,7 +545,7 @@
               response => {}
             );
           Vue.set(this, "errors", "");
-          // this.loading = false;
+
         }
       },
       filters: {
