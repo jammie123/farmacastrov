@@ -592,6 +592,7 @@
     .offer-detail__content {
       position: relative;
       max-height: 100vh;
-      margin: 1rem; } }
+      margin: 1rem;
+      width: 90%; } }
   .offer-detail__closebutton {
     position: absolute !important; }
