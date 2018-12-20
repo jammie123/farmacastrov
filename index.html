@@ -481,7 +481,7 @@
             // response => {}
           );
         },
-        showModal() {
+        showModal2() {
           // this.showModal = true;
           var html = document.querySelector("html");
           var modal = this.$refs["modal-bis"];
@@ -507,7 +507,7 @@
           console.log(this.showModal);
           app.clickedOffer = offer;
           this.order.id = app.clickedOffer.id;
-          this.showModal();
+          this.showModal2();
           Vue.set(this, "errors", "");
         },
         exitModal() {
