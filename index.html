@@ -95,7 +95,7 @@
 
     <div id="root" v-cloak="">
 
-      <nav class="header navbar  is-fixed-top" role="navigation" aria-label="main navigation">
+      <nav class="header navbar  is-fixed-top has-shadow" role="navigation" aria-label="main navigation">
         <div class="navbar-brand">
           <a class="navbar-item header-navbar-item" href="index.html">
             <img src="images/LOGO-WHITE.png" />
@@ -108,6 +108,7 @@
             aria-label="menu"
             aria-expanded="false"
             data-target="navbarBasicExample"
+            @click="toggleMenu()"
           >
             <span class="has-background-dark" aria-hidden="true"></span>
             <span class="has-background-dark" aria-hidden="true"></span>
@@ -489,6 +490,12 @@
           this.showModal.content = true;
           html.classList.add("is-clipped");
           modal.classList.add("is-active");
+        },
+        toggleMenu() {
+          var menu = document.querySelector(".navbar-menu");
+          var burger = document.querySelector(".navbar-burger");
+          menu.classList.toggle("is-active");
+          burger.classList.toggle("is-active");
         },
 
         hideModal() {
