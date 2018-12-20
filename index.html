@@ -284,10 +284,10 @@
   <div class="modal-background" @click="exitModal()"></div>
     
   <div class="offer-detail__content" v-if="showModal.modal">
-        <div class="modal-card" >
+        <div class="modal-card is-marginless" >
           <header class="modal-card-head">
             <div class="section is-paddingless">
-              <p class="modal-card-title" v-if="!showModal.message">Bedýnka: {{ clickedOffer.name }}</p>
+              <p class="modal-card-title" v-if="!showModal.message">{{ clickedOffer.name }}</p>
               <p class="modal-card-title" v-if="showModal.message">Děkujeme za Vaši objednávku</p>
             </div>
               <button
@@ -299,7 +299,7 @@
           </header>
           <section class="modal-card-body">
             <div v-if="showModal.content">
-            <div class="offer-detail__choose is-flex-tablet p-b-md p-t-md">
+            <div class="offer-detail__choose is-flex-tablet p-b-md">
               <div class="field is-marginless">
                 <label class="label has-text-weight-light"
                   >Zvolte počet a typ bedýnky</label
@@ -335,7 +335,7 @@
             </div>
 
             <form id="orderform" class="">
-              <div class="control p-b-lg">
+              <div class="control">
               <div class="control p-b-sm">
                   <input
                   style="display: none;"
@@ -343,7 +343,7 @@
                   v-model="order.id"
                 />
               <label
-                  class="label has-text-weight-light"
+                  class="label has-text-weight-light is-hidden-mobile"
                   v:class="{ 'help is-danger is-size-6': errors.fullname }"
                 >
                   Zadejte celé jméno
@@ -365,7 +365,7 @@
                 </div>
                 <div class="control p-b-sm">
                 <label
-                  class="label has-text-weight-light"
+                  class="label has-text-weight-light is-hidden-mobile"
                   v-bind:class="{ 'help is-danger is-size-6': errors.email }"
                 >
                   Email
@@ -384,14 +384,14 @@
               <div class="control p-b-sm">
 
                 <label
-                class="label has-text-weight-light"
+                class="label has-text-weight-light is-hidden-mobile"
                 v-bind:class="{ 'help is-danger is-size-6': errors.phone }"
                 >
                 Mobil
               </label>
               <input
               class="input is-primary "
-              placeholder="777555111"
+              placeholder="Zadejte telefonní kontakt"
               type="text"
               v-bind:class="{ 'is-danger': errors.phone }"
               v-model="order.phone"
