@@ -283,8 +283,8 @@
 <div id="modal-bis" ref="modal-bis" class="offer-detail modal">
   <div class="modal-background" @click="exitModal()"></div>
     
+  <div class="offer-detail__content" v-if="showModal.modal">
         <div class="modal-card" >
-          <div class="offer-detail__content" v-if="showModal.modal">
           <header class="modal-card-head">
             <div class="section is-paddingless">
               <p class="modal-card-title" v-if="!showModal.message">Bedýnka: {{ clickedOffer.name }}</p>
