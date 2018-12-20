@@ -79,44 +79,43 @@
       })
     </script>
     <div id="root" v-cloak="">
-      <nav class="header navbar  is-fixed-top" role="navigation" aria-label="main navigation">
-        <div class="navbar-brand">
-          <a class="navbar-item header-navbar-item" href="https://bulma.io">
-            <img src="images/LOGO-WHITE.png" />
-            <div class="p-l-xs is-size-6">Farma Častrov</div>
-          </a>
 
-          <a
-            role="button"
-            class="navbar-burger burger has-background-warning"
-            aria-label="menu"
-            aria-expanded="false"
-            data-target="navbarBasicExample"
-          >
-            <span class="has-background-dark" aria-hidden="true"></span>
-            <span class="has-background-dark" aria-hidden="true"></span>
-            <span class="has-background-dark" aria-hidden="true"></span>
-          </a>
-        </div>
+        <nav class="header navbar  is-fixed-top has-shadow" role="navigation" aria-label="main navigation">
+            <div class="navbar-brand">
+              <a class="navbar-item header-navbar-item" href="index.html">
+                <img src="images/LOGO-WHITE.png" />
+                <div class="p-l-xs is-size-6">Farma Častrov</div>
+              </a>
+    
+              <a
+                role="button"
+                class="navbar-burger burger has-background-warning"
+                aria-label="menu"
+                aria-expanded="false"
+                data-target="navbarBasicExample"
+                @click="toggleMenu()"
+              >
+                <span class="has-background-dark" aria-hidden="true"></span>
+                <span class="has-background-dark" aria-hidden="true"></span>
+                <span class="has-background-dark" aria-hidden="true"></span>
+              </a>
+            </div>
+    
+            <div id="navbarBasicExample" class="navbar-menu">
+              <div class="navbar-end">
+                <a href="cenik.html" class="navbar-item"> Ceník masa </a>
+    
+                <a class="navbar-item" v-scroll-to="'#contact'"> Kontakt a pobočky </a>
+              </div>
+            </div>
+          </nav>
 
-        <div id="navbarBasicExample" class="navbar-menu">
-          <div class="navbar-end">
-            <a class="navbar-item"> Ceník masa </a>
-
-            <a class="navbar-item"> Kontakt a pobočky </a>
-          </div>
-        </div>
-      </nav>
 
 
 
-
-      <section class="hero is-medium has-background-light">
-
+      <section class="hero is-medium has-background-light p-t-xl">
         <div class="hero-body">
-
           <div class="container">
-
             <div class="prize__table columns is-multiline">
               <h1 class="title">Ceník masa</h1>
                     <p class="subtitle is-size-6">Maso prodáváme v bedýnkách, obvykle 5 a 10 kg. U
@@ -272,7 +271,7 @@
 
       <section class="hero is-medium has-background-light">
         <div class="hero-body">
-          <div class="container">
+          <div id="contact" class="container">
             <h1 class="title">Kontaktuje nás</h1>
             <div class="pros-row columns is-multiline">
               <div class="pros-item column is-4">
