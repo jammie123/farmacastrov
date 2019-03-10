@@ -141,11 +141,16 @@
           </div>
         </div>
       </section>
-      <section class="section">
+      <section class="section hero is-medium">
         <div class="container">
-          <h1 id="offer-list" class="title has-text-centered is-size-3 p-md">
+          <h1 v-if="offers" id="offer-list" class="title has-text-centered is-size-3 p-md">
             Aktuální nabídky
           </h1>
+          <h1 v-else id="offer-list" class="title has-text-centered is-size-3 p-md">
+            Aktuálně nemáme žádné nabídky
+          </h1>
+
+          
           <div
             class="columns is-multiline is-centered is-mobile"
             v-for="offer in offers"
@@ -477,7 +482,12 @@
             response => {
               // get body data
               this.loading = false;
-              this.offers = response.data;
+              if(response.data.length == 0){
+                this.offers = false;
+              }
+              else{
+                this.offers = response.data;
+              }
             }
             // response => {}
           );
