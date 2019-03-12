@@ -137,18 +137,20 @@
             <h2 class="subtitle has-text-white is-size-6-mobile">
               Objednejte si bedýnku a ochutnejte maso z Vysočiny.
             </h2>
-            <button class="button is-warning is-large" v-scroll-to="'#offer-list'">Aktuální nabídka</button>
+
+            <button v-if="offers" class="button is-warning is-large" v-scroll-to="'#offer-list'">Aktuální nabídka</button>
+
           </div>
         </div>
       </section>
-      <section class="section hero is-medium">
+      <section class="section hero is-snall">
         <div class="container">
           <h1 v-if="offers" id="offer-list" class="title has-text-centered is-size-3 p-md">
             Aktuální nabídky
           </h1>
-          <h1 v-else id="offer-list" class="title has-text-centered is-size-3 p-md">
+          <h3 v-else id="offer-list" class="title has-text-centered is-size-5 p-md">
             Aktuálně nemáme žádné nabídky
-          </h1>
+          </h3>
           <div
             class="columns is-multiline is-centered is-mobile"
             v-for="offer in offers"
